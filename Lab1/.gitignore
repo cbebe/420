@@ -1,0 +1,12 @@
+.vscode
+
+# Output files
+data_input
+data_output
+
+# Executables
+matrixgen
+serialtester
+
+# Object files
+*.o

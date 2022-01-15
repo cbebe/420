@@ -40,6 +40,9 @@ Example:
 #include <unistd.h>
 #include <time.h>
 
+// VSCode Intellisense cannot read Linux header files properly so I'm "redefining" it here
+// https://man7.org/linux/man-pages/man3/getopt.3.html
+char *optarg;
 
 int main (int argc, char* argv[])
 {
