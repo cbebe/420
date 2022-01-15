@@ -1,6 +1,6 @@
 DATA := data_input data_output
-UTIL := matrixgen serialtester
-util: $(UTIL)
+EXE := matrixgen serialtester lab1
+exec: $(EXE)
 
 CFLAGS := -Wall -Wpedantic
 
@@ -8,6 +8,6 @@ CFLAGS := -Wall -Wpedantic
 	gcc $^ $(CFLAGS) -o $@ 
 
 clean:
-	rm -f $(UTIL) $(DATA)
+	rm -f $(EXE) $(DATA)
 
-.PHONY: util clean
+.PHONY: exe clean
