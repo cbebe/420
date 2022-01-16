@@ -28,22 +28,23 @@ Error returns:
 
 -----
 Example:
-    >matrixgen 
+    > matrixgen
     generate two 10 by 10 matrices with elements between -5 and 5, and store the result in "./data_input"
    
-    >matrixgen -s 100 -b 10 -p
+    > matrixgen -s 100 -b 10 -p
     generate two 100 by 100 matrices with elements between -10 and 10, print the result and store it in "data_input"
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <getopt.h>
 #include <time.h>
 
-/**
- * VSCode Intellisense cannot read Linux header files properly so I'm "redefining" it here
- * https://man7.org/linux/man-pages/man3/getopt.3.html
- */
+/*
+VSCode Intellisense cannot read Linux header files properly so I'm "redefining" it here
+https://man7.org/linux/man-pages/man3/getopt.3.html
+*/
 char *optarg;
 
 int main(int argc, char *argv[])
