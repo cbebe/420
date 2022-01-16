@@ -21,46 +21,41 @@ int **B;
 int n;
 int **C;
 
-void say_hello()
-{
-    log_str("Hello ", RED);
-    log_str("ECE ", YELLOW);
-    log_int(420, GREEN);
-    log_str(" ", RESTORE);
-    log_str("world\n", BLUE);
+void say_hello() {
+  log_str("Hello ", RED);
+  log_str("ECE ", YELLOW);
+  log_int(420, GREEN);
+  log_str(" ", RESTORE);
+  log_str("world\n", BLUE);
 }
 
-void init_result_matrix()
-{
-    int i;
-    C = malloc(n * sizeof(int *));
-    for (i = 0; i < n; i++)
-        C[i] = malloc(n * sizeof(int));
+void init_result_matrix() {
+  int i;
+  C = malloc(n * sizeof(int *));
+  for (i = 0; i < n; i++)
+    C[i] = malloc(n * sizeof(int));
 }
 
-void multiply()
-{
-    int i, j, k;
-    /* serial implementation 🥴 */
-    for (i = 0; i < n; i++)
-        for (j = 0; j < n; j++)
-        {
-            C[i][j] = 0;
-            for (k = 0; k < n; k++)
-                C[i][j] += A[i][k] * B[k][j];
-        }
+void multiply() {
+  int i, j, k;
+  /* serial implementation 🥴 */
+  for (i = 0; i < n; i++)
+    for (j = 0; j < n; j++) {
+      C[i][j] = 0;
+      for (k = 0; k < n; k++)
+        C[i][j] += A[i][k] * B[k][j];
+    }
 }
 
-int main()
-{
-    double start, end;
-    say_hello();
-    Lab1_loadinput(&A, &B, &n);
-    init_result_matrix();
-    GET_TIME(start)
-    multiply();
-    GET_TIME(end)
-    Lab1_saveoutput(C, &n, end - start);
+int main() {
+  double start, end;
+  say_hello();
+  Lab1_loadinput(&A, &B, &n);
+  init_result_matrix();
+  GET_TIME(start)
+  multiply();
+  GET_TIME(end)
+  Lab1_saveoutput(C, &n, end - start);
 
-    return 0;
+  return 0;
 }

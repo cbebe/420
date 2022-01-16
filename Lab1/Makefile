@@ -1,11 +1,19 @@
 EXE := matrixgen serialtester lab1
 DATA := data_input data_output
 
-test: $(DATA) serialtester
+SIZE ?= 10
+BOUND ?= 5
+
+test: data_input serialtester
+	@./lab1
+	@tail -n1 data_output
 	@./serialtester
 
+mat: matrixgen
+	@./matrixgen -s $(SIZE) -b $(BOUND)
+
 data_input: matrixgen
-	@./matrixgen -s 100 -b 1000000
+	@./matrixgen -s 1000 -b 1000000
 
 data_output: lab1
 	@./lab1
@@ -15,7 +23,7 @@ exe: $(EXE)
 CFLAGS := -Wall -Wpedantic
 
 %: %.c lab1_IO.c
-	gcc $^ $(CFLAGS) -o $@ 
+	gcc $^ $(CFLAGS) -o $@
 
 clean:
 	rm -f $(EXE) $(DATA)
@@ -23,4 +31,4 @@ clean:
 deploy: clean
 	rsync -av . cloud:Lab1
 
-.PHONY: exe clean deploy test
+.PHONY: exe clean deploy test mat
