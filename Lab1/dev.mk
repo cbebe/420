@@ -1,3 +1,6 @@
+CC ?= gcc
+CFLAGS := -Wall -Wpedantic -std=c90 -DDEV
+
 EXE := matrixgen serialtester main
 DATA := data_input data_output
 
@@ -14,10 +17,9 @@ data_input: matrixgen
 
 exe: $(EXE)
 
-CFLAGS := -Wall -Wpedantic -std=c90 -DDEV
 
 %: %.c lab1_IO.c
-	gcc $^ $(CFLAGS) -o $@
+	$(CC) $^ $(CFLAGS) -o $@
 
 clean:
 	rm -f $(EXE) $(DATA) $(MEMBERS:%=%.zip)

@@ -1,9 +1,10 @@
+CC ?= gcc
 CFLAGS := -Wall -Wpedantic -std=c90
 
 all: main
 
 %: %.c lab1_IO.c
-	gcc $^ $(CFLAGS) -o $@
+	$(CC) $^ $(CFLAGS) -o $@
 
 test:
 	$(MAKE) -f dev.mk test
