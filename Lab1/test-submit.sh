@@ -1,17 +1,61 @@
 #!/bin/sh
 
-sub_dir=submission
+# test-submit.sh
+# Tests our submission file to make sure that everything passes
+# To be as similar to the production env as possible, we're not using
+
+set -e
+
+RESTORE="\033[0m"
+RED="\033[01;31m"
+GREEN="\033[01;32m"
+YELLOW="\033[01;33m"
+BLUE="\033[01;34m"
+
 zip_file=$(head -n1 members.txt).zip
 
-echo "1" | ./submit.sh
-mkdir -p $sub_dir
-unzip $zip_file -d $sub_dir >/dev/null
+cleanup() {
+	echo "${GREEN}Cleaning up...${RESTORE}"
+	rm -rf $zip_file Code Members main
+	make d-clean 1>/dev/null
+}
 
-cd ${sub_dir}/Code
-make
-cd -
+die() {
+	cleanup
+	exit 1
+}
 
-cp ${sub_dir}/Code/main .
-rm -rf $sub_dir $zip_file
-make test
-make d-clean
+printf "${YELLOW}Creating submission file... ${RESTORE}"
+echo "1" | ./submit.sh 1>/dev/null && {
+	echo "${GREEN}creation successful.${RESTORE}"
+} || {
+	echo "${RED}error creating submission file.${RESTORE}"
+	die
+}
+
+echo "${YELLOW}Unzipping submission file... ${RESTORE}"
+unzip $zip_file 1>/dev/null
+
+printf "${YELLOW}Testing members.txt... ${RESTORE}"
+cmp members.txt Members/members.txt 1>/dev/null && {
+	echo "${GREEN}members.txt matches.${RESTORE}"
+} || {
+	echo "${RED}members.txt does not match.${RESTORE}"
+	die
+}
+
+cd Code
+printf "${YELLOW}Testing submission Makefile...${RESTORE}"
+make 1>/dev/null && {
+	echo "${GREEN}executable creation successful.${RESTORE}"
+} || {
+	echo "${RED}error creating executable.${RESTORE}"
+	die
+}
+cp main ..
+cd - >/dev/null
+
+echo "${YELLOW}Testing executable...${RESTORE}"
+make -s test || die
+
+cleanup

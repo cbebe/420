@@ -47,6 +47,7 @@ int main(int argc, const char **argv)
   double start, end, total;
 #ifdef DEV
   say_hello();
+  log_str("Matrix Multiplication:\n", BLUE);
 #endif
   Lab1_loadinput(&A, &B, &n);
   init_result_matrix();

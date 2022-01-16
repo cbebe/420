@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 
 #ifdef DEV
     say_hello();
+    log_str("Matrix Multiplication Testing...\n", PURPLE);
 #endif
     C = malloc(n * sizeof(int *));
     for (i = 0; i < n; i++)
