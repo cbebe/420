@@ -1,34 +1,19 @@
-EXE := matrixgen serialtester lab1
-DATA := data_input data_output
+CFLAGS := -Wall -Wpedantic -std=c90
 
-SIZE ?= 10
-BOUND ?= 5
-
-test: data_input serialtester
-	@./lab1
-	@tail -n1 data_output
-	@./serialtester
-
-mat: matrixgen
-	@./matrixgen -s $(SIZE) -b $(BOUND)
-
-data_input: matrixgen
-	@./matrixgen -s 1000 -b 1000000
-
-data_output: lab1
-	@./lab1
-
-exe: $(EXE)
-
-CFLAGS := -Wall -Wpedantic
+all: main
 
 %: %.c lab1_IO.c
 	gcc $^ $(CFLAGS) -o $@
 
+test:
+	$(MAKE) -f dev.mk test
+
+# wildcard target for calling targets in development Makefile
+# not included in submission :P
+d-%:
+	$(MAKE) -f dev.mk $*
+
 clean:
-	rm -f $(EXE) $(DATA)
+	rm -f main
 
-deploy: clean
-	rsync -av . cloud:Lab1
-
-.PHONY: exe clean deploy test mat
+.PHONY: all clean
