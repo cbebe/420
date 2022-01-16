@@ -1,6 +1,16 @@
-DATA := data_input data_output
 EXE := matrixgen serialtester lab1
-exec: $(EXE)
+DATA := data_input data_output
+
+test: $(DATA) serialtester
+	@./serialtester
+
+data_input: matrixgen
+	@./matrixgen -s 100 -b 1000000
+
+data_output: lab1
+	@./lab1
+
+exe: $(EXE)
 
 CFLAGS := -Wall -Wpedantic
 
@@ -10,4 +20,7 @@ CFLAGS := -Wall -Wpedantic
 clean:
 	rm -f $(EXE) $(DATA)
 
-.PHONY: exe clean
+deploy: clean
+	rsync -av . cloud:Lab1
+
+.PHONY: exe clean deploy test

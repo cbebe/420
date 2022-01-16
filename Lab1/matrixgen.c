@@ -40,88 +40,101 @@ Example:
 #include <unistd.h>
 #include <time.h>
 
-// VSCode Intellisense cannot read Linux header files properly so I'm "redefining" it here
-// https://man7.org/linux/man-pages/man3/getopt.3.html
+/**
+ * VSCode Intellisense cannot read Linux header files properly so I'm "redefining" it here
+ * https://man7.org/linux/man-pages/man3/getopt.3.html
+ */
 char *optarg;
 
-int main (int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     int size = 10, bound = 5;
-    char* OUTPATH = "data_input";
-    int b_print = 0;    //switch for the print
+    char *OUTPATH = "data_input";
+    int b_print = 0; /* switch for the print */
     int option;
-    int temp,i,j;
+    int temp, i, j;
     FILE *op;
 
     while ((option = getopt(argc, argv, "s:b:po:")) != -1)
-        switch(option)
+        switch (option)
         {
-            case 's': size = strtol(optarg, NULL, 10); break;
-            case 'b': bound = strtol(optarg, NULL, 10); ; break;
-            case 'p': b_print = 1; break;
-            case 'o': OUTPATH = optarg; break;
-            case '?': printf("Unexpected Options. \n"); return -1;
+        case 's':
+            size = strtol(optarg, NULL, 10);
+            break;
+        case 'b':
+            bound = strtol(optarg, NULL, 10);
+            ;
+            break;
+        case 'p':
+            b_print = 1;
+            break;
+        case 'o':
+            OUTPATH = optarg;
+            break;
+        case '?':
+            printf("Unexpected Options. \n");
+            return -1;
         }
-    if ((op = fopen(OUTPATH,"w")) == NULL)
+    if ((op = fopen(OUTPATH, "w")) == NULL)
     {
         printf("Cant open a file!/n");
         return -2;
     }
-		
+
     srand(time(NULL));
-    fprintf(op,"%d\n\n", size);
+    fprintf(op, "%d\n\n", size);
     for (i = 0; i < size; i++)
-    {	
+    {
         for (j = 0; j < size; j++)
         {
             temp = rand() % (2 * bound) - bound + 1;
-            fprintf(op,"%d\t",temp);
+            fprintf(op, "%d\t", temp);
         }
-        fprintf(op,"\n");
+        fprintf(op, "\n");
     }
-    fprintf(op,"\n");	
+    fprintf(op, "\n");
     for (i = 0; i < size; i++)
-    {	
+    {
         for (j = 0; j < size; j++)
         {
             temp = rand() % (2 * bound) - bound + 1;
-            fprintf(op,"%d\t",temp);
+            fprintf(op, "%d\t", temp);
         }
-        fprintf(op,"\n");
+        fprintf(op, "\n");
     }
     fclose(op);
     if (b_print)
     {
-        if ((op = fopen(OUTPATH,"r"))== NULL)
+        if ((op = fopen(OUTPATH, "r")) == NULL)
         {
-            printf("Cant open a file!\n");		
+            printf("Cant open a file!\n");
             return -2;
         }
-        fscanf(op,"%d\n",&size);
+        fscanf(op, "%d\n", &size);
         printf("The matrix size is %d\n", size);
         printf("=====================================\n");
-        printf("Matrix A is \n");			
+        printf("Matrix A is \n");
         for (i = 0; i < size; i++)
         {
             for (j = 0; j < size; j++)
             {
-                fscanf(op,"%d\t",&temp);
-                printf("%d\t",temp);
+                fscanf(op, "%d\t", &temp);
+                printf("%d\t", temp);
             }
             printf("\n");
         }
         printf("=====================================\n");
-        printf("Matrix B is \n");			
+        printf("Matrix B is \n");
         for (i = 0; i < size; i++)
         {
             for (j = 0; j < size; j++)
             {
-                fscanf(op,"%d\t",&temp);
-                printf("%d\t",temp);
+                fscanf(op, "%d\t", &temp);
+                printf("%d\t", temp);
             }
             printf("\n");
         }
-        fclose(op); 
-        }
-	return 0;
+        fclose(op);
+    }
+    return 0;
 }
