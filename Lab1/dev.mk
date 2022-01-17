@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS := -Wall -Wpedantic -std=c90 -DDEV
+CFLAGS := -Wall -Wpedantic -std=c90 -DDEV -lpthread -lm
 
 EXE := matrixgen serialtester main
 DATA := data_input data_output

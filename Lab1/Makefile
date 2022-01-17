@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS := -Wall -Wpedantic -std=c90
+CFLAGS := -Wall -Wpedantic -std=c90 -lpthread -lm
 
 all: main
 

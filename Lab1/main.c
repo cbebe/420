@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
 
 #include "lab1_IO.h"
 
@@ -18,20 +19,20 @@
 #include "dev.h"
 #endif
 
-int **A;
-int **B;
-int n;
-int **C;
+int n, thread_count;
+int **A, **B, **C;
 
 void init_result_matrix();
 
-void multiply()
+void *multiply_thread(void* rank)
 {
   /*
   Multiplies the matrices A and B into matrix C
   📋 TODO: Implement using shared memory and pthreads
   */
+  long my_rank;
   int i, j, k;
+  my_rank = (long) rank;
   /* serial implementation 🥴 */
   for (i = 0; i < n; i++)
     for (j = 0; j < n; j++)
@@ -40,11 +41,40 @@ void multiply()
       for (k = 0; k < n; k++)
         C[i][j] += A[i][k] * B[k][j];
     }
+
+  return NULL;
+}
+
+void multiply()
+{
+  /*
+  Splits the task between `thread_count` threads
+  */
+  long thread;
+  pthread_t* thread_handles;
+
+  thread_handles = malloc(thread_count*sizeof(pthread_t));
+
+  for (thread = 0; thread < thread_count; ++thread)
+    pthread_create(&thread_handles[thread], NULL, multiply_thread, (void*) thread);
+
+  for (thread = 0; thread < thread_count; ++thread)
+    pthread_join(thread_handles[thread], NULL);
+}
+
+void print_usage(const char* prog_name)
+{
+   fprintf(stderr, "USAGE: %s <thread_count>\n", prog_name);
+   exit(1);
 }
 
 int main(int argc, const char **argv)
 {
   double start, end, total;
+
+  if (argc != 2) print_usage(argv[0]);
+  thread_count = atoi(argv[1]);
+
 #ifdef DEV
   say_hello();
   log_str("Matrix Multiplication:\n", BLUE);
@@ -74,3 +104,4 @@ void init_result_matrix()
   for (i = 0; i < n; i++)
     C[i] = malloc(n * sizeof(int));
 }
+
