@@ -17,7 +17,7 @@ zip_file=$(head -n1 members.txt).zip
 cleanup() {
 	echo "${GREEN}Cleaning up...${RESTORE}"
 	rm -rf $zip_file Code Members main
-	make d-clean 1>/dev/null
+	make clean 1>/dev/null
 }
 
 die() {

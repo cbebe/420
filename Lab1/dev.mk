@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS := -Wall -Wpedantic -std=c90 -DDEV -lpthread -lm
+CFLAGS := -Wall -Wpedantic -std=c90 -DDEV -g -lpthread -lm
 
 EXE := matrixgen serialtester main
 DATA := data_input data_output
@@ -15,9 +15,6 @@ test: data_input main serialtester
 data_input: matrixgen
 	./matrixgen -s $(SIZE) -b $(BOUND)
 
-exe: $(EXE)
-
-
 %: %.c lab1_IO.c
 	$(CC) $^ $(CFLAGS) -o $@
 
@@ -29,7 +26,4 @@ clean:
 deploy: clean
 	rsync -av . cloud:Lab1
 
-submit: Makefile main.c
-	./submit.sh
-
-.PHONY: exe clean deploy test mat
+.PHONY: clean deploy test
