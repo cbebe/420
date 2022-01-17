@@ -6,10 +6,11 @@ DATA := data_input data_output
 
 SIZE ?= 100
 BOUND ?= 5
+THREADS ?= 4
 MEMBERS := $(shell cat members.txt)
 
 test: data_input main serialtester
-	./main
+	./main $(THREADS) 
 	./serialtester
 
 data_input: matrixgen

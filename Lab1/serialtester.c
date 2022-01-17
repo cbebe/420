@@ -71,7 +71,13 @@ int main(int argc, char *argv[])
         printf("The result is correct!\n");
 #endif
     else
+    {
+#ifdef DEV
+        log_str("The result is wrong.\n", RED);
+#elif
         printf("The result is wrong.\n");
+#endif
+    }
 
     for (i = 0; i < n; i++)
     {
@@ -86,5 +92,5 @@ int main(int argc, char *argv[])
 #ifdef DEV
     say_goodbye();
 #endif
-    return 0;
+    return !flag;
 }
