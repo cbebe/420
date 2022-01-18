@@ -56,6 +56,6 @@ cp main ..
 cd - >/dev/null
 
 printf "${YELLOW}Testing executable...${RESTORE}\n"
-make -s test || die
+THREADS=$THREADS make test || die
 
 cleanup
