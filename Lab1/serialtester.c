@@ -67,14 +67,14 @@ int main(int argc, char *argv[])
     if (flag == 1)
 #ifdef DEV
         log_str("The result is correct!\n", GREEN);
-#elif
+#else
         printf("The result is correct!\n");
 #endif
     else
     {
 #ifdef DEV
         log_str("The result is wrong.\n", RED);
-#elif
+#else
         printf("The result is wrong.\n");
 #endif
     }
