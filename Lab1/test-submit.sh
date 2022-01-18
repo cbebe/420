@@ -45,7 +45,7 @@ cmp members.txt Members/members.txt 1>/dev/null && {
 }
 
 cd Code
-printf "${YELLOW}Testing submission Makefile...${RESTORE}"
+printf "${YELLOW}Testing submission Makefile...${RESTORE}\n"
 make 1>/dev/null && {
 	printf "${GREEN}executable creation successful.${RESTORE}\n"
 } || {
