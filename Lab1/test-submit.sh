@@ -15,7 +15,7 @@ BLUE="\033[01;34m"
 zip_file=$(head -n1 members.txt).zip
 
 cleanup() {
-	echo "${GREEN}Cleaning up...${RESTORE}"
+	printf "${GREEN}Cleaning up...${RESTORE}\n"
 	rm -rf $zip_file Code Members main
 	make clean 1>/dev/null
 }
@@ -27,35 +27,35 @@ die() {
 
 printf "${YELLOW}Creating submission file... ${RESTORE}"
 echo "1" | ./submit.sh 1>/dev/null && {
-	echo "${GREEN}creation successful.${RESTORE}"
+	printf "${GREEN}creation successful.${RESTORE}\n"
 } || {
-	echo "${RED}error creating submission file.${RESTORE}"
+	printf "${RED}error creating submission file.${RESTORE}\n"
 	die
 }
 
-echo "${YELLOW}Unzipping submission file... ${RESTORE}"
+printf "${YELLOW}Unzipping submission file... ${RESTORE}\n"
 unzip $zip_file 1>/dev/null
 
 printf "${YELLOW}Testing members.txt... ${RESTORE}"
 cmp members.txt Members/members.txt 1>/dev/null && {
-	echo "${GREEN}members.txt matches.${RESTORE}"
+	printf "${GREEN}members.txt matches.${RESTORE}\n"
 } || {
-	echo "${RED}members.txt does not match.${RESTORE}"
+	printf "${RED}members.txt does not match.${RESTORE}\n"
 	die
 }
 
 cd Code
 printf "${YELLOW}Testing submission Makefile...${RESTORE}"
 make 1>/dev/null && {
-	echo "${GREEN}executable creation successful.${RESTORE}"
+	printf "${GREEN}executable creation successful.${RESTORE}\n"
 } || {
-	echo "${RED}error creating executable.${RESTORE}"
+	printf "${RED}error creating executable.${RESTORE}\n"
 	die
 }
 cp main ..
 cd - >/dev/null
 
-echo "${YELLOW}Testing executable...${RESTORE}"
+printf "${YELLOW}Testing executable...${RESTORE}\n"
 make -s test || die
 
 cleanup
