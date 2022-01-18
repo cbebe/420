@@ -1,9 +1,14 @@
+#include "lab1_IO.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "lab1_IO.h"
 
-int Lab1_loadinput(int ***A, int ***B, int *n)
-{
+#define die(message)                                                           \
+    do {                                                                       \
+        printf(message);                                                       \
+        return 1;                                                              \
+    } while (0)
+
+int Lab1_loadinput(int ***A, int ***B, int *n) {
     /*
     Allocate memory and load the input data for Lab 1
 
@@ -13,7 +18,8 @@ int Lab1_loadinput(int ***A, int ***B, int *n)
     int ***B    pointer to the matrix B
     int *n      pointer to the matrix size
 
-    original files should be the output of the matrixgen.c with name "data_input" in the same folder
+    original files should be the output of the matrixgen.c with name
+    "data_input" in the same folder
 
     -----
     Output:
@@ -21,9 +27,8 @@ int Lab1_loadinput(int ***A, int ***B, int *n)
 
     -----
     Example:
-    Two integer array pointers and a integer should be defined before calling this function:
-    int **A; int **B; int n
-    call this function as
+    Two integer array pointers and a integer should be defined before calling
+    this function: int **A; int **B; int n call this function as
     lab1_loadinput(&A, &B, &n);
     */
 
@@ -31,17 +36,14 @@ int Lab1_loadinput(int ***A, int ***B, int *n)
     int i, j;
 
     if ((ip = fopen("data_input", "r")) == NULL)
-    {
-        printf("error opening the input data.\n");
-        return 1;
-    }
+        die("error opening the input data.\n");
+
     fscanf(ip, "%d\n", n);
 
     *A = malloc(*n * sizeof(int *));
     *B = malloc(*n * sizeof(int *));
 
-    for (i = 0; i < *n; i++)
-    {
+    for (i = 0; i < *n; i++) {
         (*A)[i] = malloc(*n * sizeof(int));
         (*B)[i] = malloc(*n * sizeof(int));
     }
@@ -56,17 +58,16 @@ int Lab1_loadinput(int ***A, int ***B, int *n)
     return 0;
 }
 
-int Lab1_saveoutput(int **C, int *n, double Time)
-{
+int Lab1_saveoutput(int **C, int *n, double Time) {
     /*
-    Save the data to the file for Lab 1 
+    Save the data to the file for Lab 1
 
     -----
     Input:
-    int **C     pointer to the result matrix 
+    int **C     pointer to the result matrix
     int *n      pointer to the matrix size
     double Time measure calulation time
-    
+
     -----
     Output:
     data_output the stored data
@@ -80,14 +81,10 @@ int Lab1_saveoutput(int **C, int *n, double Time)
     int i, j;
 
     if ((op = fopen("data_output", "w")) == NULL)
-    {
-        printf("Error opening the output file.\n");
-        return 1;
-    }
+        die("Error opening the output file.\n");
 
     fprintf(op, "%d\n\n", *n);
-    for (i = 0; i < *n; i++)
-    {
+    for (i = 0; i < *n; i++) {
         for (j = 0; j < *n; j++)
             fprintf(op, "%d\t", C[i][j]);
         fprintf(op, "\n");

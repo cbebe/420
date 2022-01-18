@@ -1,5 +1,6 @@
 /*
-Generate two same sized square matrices in which the every element is uniformly randomly selected integer within some absolute value
+Generate two same sized square matrices in which the every element is uniformly
+randomly selected integer within some absolute value
 
 -----
 Compiling:
@@ -11,10 +12,10 @@ Synopsis:
 
 -----
 Options:
-    -s    specify the size of the matrices (default 10) 
+    -s    specify the size of the matrices (default 10)
     -b    upper bound of the absolute value of the elements (default 5)
     -p    print the result
-    -o    specify the output path (default "./data_input") 
+    -o    specify the output path (default "./data_input")
 
 -----
 Outputs:
@@ -24,31 +25,33 @@ Outputs:
 -----
 Error returns:
     -1    unexpected options
-    -2    fail to open file 
+    -2    fail to open file
 
 -----
 Example:
     > matrixgen
-    generate two 10 by 10 matrices with elements between -5 and 5, and store the result in "./data_input"
-   
+    generate two 10 by 10 matrices with elements between -5 and 5, and store the
+result in "./data_input"
+
     > matrixgen -s 100 -b 10 -p
-    generate two 100 by 100 matrices with elements between -10 and 10, print the result and store it in "data_input"
+    generate two 100 by 100 matrices with elements between -10 and 10, print the
+result and store it in "data_input"
 */
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <getopt.h>
 #include <time.h>
+#include <unistd.h>
 
 /*
-VSCode Intellisense cannot read Linux header files properly so I'm "redefining" it here
+VSCode Intellisense cannot read Linux header files properly so I'm "redefining"
+it here
 https://man7.org/linux/man-pages/man3/getopt.3.html
 */
 char *optarg;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     int size = 10, bound = 5;
     char *OUTPATH = "data_input";
     int b_print = 0; /* switch for the print */
@@ -57,8 +60,7 @@ int main(int argc, char *argv[])
     FILE *op;
 
     while ((option = getopt(argc, argv, "s:b:po:")) != -1)
-        switch (option)
-        {
+        switch (option) {
         case 's':
             size = strtol(optarg, NULL, 10);
             break;
@@ -76,38 +78,31 @@ int main(int argc, char *argv[])
             printf("Unexpected Options. \n");
             return -1;
         }
-    if ((op = fopen(OUTPATH, "w")) == NULL)
-    {
+    if ((op = fopen(OUTPATH, "w")) == NULL) {
         printf("Cant open a file!/n");
         return -2;
     }
 
     srand(time(NULL));
     fprintf(op, "%d\n\n", size);
-    for (i = 0; i < size; i++)
-    {
-        for (j = 0; j < size; j++)
-        {
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
             temp = rand() % (2 * bound) - bound + 1;
             fprintf(op, "%d\t", temp);
         }
         fprintf(op, "\n");
     }
     fprintf(op, "\n");
-    for (i = 0; i < size; i++)
-    {
-        for (j = 0; j < size; j++)
-        {
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
             temp = rand() % (2 * bound) - bound + 1;
             fprintf(op, "%d\t", temp);
         }
         fprintf(op, "\n");
     }
     fclose(op);
-    if (b_print)
-    {
-        if ((op = fopen(OUTPATH, "r")) == NULL)
-        {
+    if (b_print) {
+        if ((op = fopen(OUTPATH, "r")) == NULL) {
             printf("Cant open a file!\n");
             return -2;
         }
@@ -115,10 +110,8 @@ int main(int argc, char *argv[])
         printf("The matrix size is %d\n", size);
         printf("=====================================\n");
         printf("Matrix A is \n");
-        for (i = 0; i < size; i++)
-        {
-            for (j = 0; j < size; j++)
-            {
+        for (i = 0; i < size; i++) {
+            for (j = 0; j < size; j++) {
                 fscanf(op, "%d\t", &temp);
                 printf("%d\t", temp);
             }
@@ -126,10 +119,8 @@ int main(int argc, char *argv[])
         }
         printf("=====================================\n");
         printf("Matrix B is \n");
-        for (i = 0; i < size; i++)
-        {
-            for (j = 0; j < size; j++)
-            {
+        for (i = 0; i < size; i++) {
+            for (j = 0; j < size; j++) {
                 fscanf(op, "%d\t", &temp);
                 printf("%d\t", temp);
             }
