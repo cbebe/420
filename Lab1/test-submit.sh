@@ -2,7 +2,8 @@
 
 # test-submit.sh
 # Tests our submission file to make sure that everything passes
-# To be as similar to the production env as possible, we're not using
+# To be as similar to the production env as possible,
+# we're not defining DEV in the main executable so no pretty printing :(
 
 set -e
 
@@ -56,6 +57,6 @@ cp main ..
 cd - >/dev/null
 
 printf "${YELLOW}Testing executable...${RESTORE}\n"
-THREADS=$THREADS make test || die
+SIZE=${SIZE:-100} BOUND=${BOUND:-5} THREADS=${THREADS:-4} make test || die
 
 cleanup

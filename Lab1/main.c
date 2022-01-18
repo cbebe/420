@@ -79,9 +79,11 @@ int main(int argc, const char **argv) {
     say_hello();
     log_str("Matrix Multiplication:\n", BLUE);
 #endif
+
     do_experiment();
+
 #ifdef DEV
-    print_total_time(total);
+    print_result(n, total);
     say_goodbye();
 #endif
 

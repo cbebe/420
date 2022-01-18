@@ -7,7 +7,7 @@ make deploy
 printf "${PURPLE}########################${RESTORE}\n"
 printf "${PURPLE}# SSHing into cloud VM #${RESTORE}\n"
 printf "${PURPLE}########################${RESTORE}\n"
-ssh cloud "cd Lab1 && THREADS=${THREADS} ./test-submit.sh"
+ssh cloud "cd Lab1 && SIZE=${SIZE} BOUND=${BOUND} THREADS=${THREADS} ./test-submit.sh"
 printf "${PURPLE}########################${RESTORE}\n"
 printf "${PURPLE}#   Exiting cloud VM   #${RESTORE}\n"
 printf "${PURPLE}########################${RESTORE}\n"

@@ -9,8 +9,8 @@ BOUND ?= 5
 THREADS ?= 4
 MEMBERS := $(shell cat members.txt)
 
-test: data_input main serialtester
-	./main $(THREADS) 
+test: new data_input main serialtester
+	./main $(THREADS)
 	./serialtester
 
 data_input: matrixgen
@@ -18,6 +18,9 @@ data_input: matrixgen
 
 %: %.c lab1_IO.c
 	$(CC) $^ $(CFLAGS) -o $@
+
+new:
+	rm -f $(DATA)
 
 clean:
 	rm -f $(EXE) $(DATA) $(MEMBERS:%=%.zip)
@@ -27,4 +30,4 @@ clean:
 deploy: clean
 	rsync -av . cloud:Lab1
 
-.PHONY: clean deploy test
+.PHONY: clean deploy test new

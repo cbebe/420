@@ -32,9 +32,11 @@ Says hello (but with coloured text)
 /*
 Prints the results
 */
-#define print_total_time(time)                                                 \
+#define print_result(size, time)                                               \
     do {                                                                       \
-        log_str("The total time was: ", YELLOW);                               \
+        log_str("For two matrices of size ", YELLOW);                          \
+        log_int(size, GREEN);                                                  \
+        log_str(",\nThe total time was: ", YELLOW);                            \
         log_double(time, GREEN);                                               \
         log_str(" seconds\n", YELLOW);                                         \
     } while (0)
@@ -58,9 +60,7 @@ The calls have to be split up because of -Woverlength-strings
                 GREEN);                                                                                     \
         log_str("⣿⣿⣿⣿⣿⣿⣿⣷⣝⠻⠶⣬⣍⣛⣛⠓⠶⠶⠶⠤⠬⠭⠤⠶⠶⠞⠛⣡⣿\n" \
                 "⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣬⣭⣍⣙⣛⣛⣛⠛⠛⠛⠿⠿⠿⠛⣠⣿⣿\n" \
-                "⣦⣈⠉⢛⠻⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠛⣁⣴⣾⣿⣿⣿⣿\n" \
-                "⣿⣿⣿⣶⣮⣭⣁⣒⣒⣒⠂⠠⠬⠭⠭⠭⢀⣀⣠⣄⡘⠿⣿⣿⣿⣿⣿⣿⣿\n" \
-                "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡈⢿⣿⣿⣿⣿⣿\n",                                                          \
+                "⣦⣈⠉⢛⠻⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠛⣁⣴⣾⣿⣿⣿⣿\n",                                                          \
                 GREEN);                                                                                     \
     } while (0)
 
