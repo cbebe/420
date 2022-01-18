@@ -55,7 +55,7 @@ void do_experiment() {
     pthread_t *thread_handles;
     Lab1_loadinput(&A, &B, &n);
     init_result_matrix();
-    GET_TIME(start)
+    GET_TIME(start);
 
     thread_handles = malloc(thread_count * sizeof(pthread_t));
 
@@ -66,7 +66,7 @@ void do_experiment() {
     for (thread = 0; thread < thread_count; ++thread)
         pthread_join(thread_handles[thread], NULL);
 
-    GET_TIME(end)
+    GET_TIME(end);
     total = end - start;
     Lab1_saveoutput(C, &n, total);
 }
@@ -78,13 +78,11 @@ int main(int argc, const char **argv) {
 #ifdef DEV
     say_hello();
     log_str("Matrix Multiplication:\n", BLUE);
-#endif
-
     do_experiment();
-
-#ifdef DEV
     print_result(n, total);
     say_goodbye();
+#else
+    do_experiment();
 #endif
 
     return 0;
