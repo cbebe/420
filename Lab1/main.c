@@ -30,7 +30,7 @@ void *multiply_thread(void *rank) {
     int first_i, last_i, first_j, last_j, last_r;
 
     my_rank = (long)rank;
-    x = my_rank / sqrt_p;
+    x = (int)floor(my_rank / sqrt_p);
     y = my_rank % sqrt_p;
     block = (n / sqrt_p);
     first_i = block * x;
