@@ -26,17 +26,17 @@ double total;
 
 void *multiply_thread(void *rank) {
     long my_rank;
-    int i, j, r, x, y;
+    int i, j, r, x, y, block;
     int first_i, last_i, first_j, last_j, last_r;
 
     my_rank = (long)rank;
     x = my_rank / sqrt_p;
     y = my_rank % sqrt_p;
-
-    first_i = (n / sqrt_p) * x;
-    last_i = (n / sqrt_p) * (x + 1) - 1;
-    first_j = (n / sqrt_p) * y;
-    last_j = (n / sqrt_p) * (y + 1) - 1;
+    block = (n / sqrt_p);
+    first_i = block * x;
+    last_i = block * (x + 1) - 1;
+    first_j = block * y;
+    last_j = block * (y + 1) - 1;
     last_r = n - 1;
 
     for (i = first_i; i <= last_i; i++)
@@ -60,12 +60,12 @@ void do_experiment() {
         exit(1);
     }
 
-    C = malloc(n * sizeof(int *));
+    C = malloc(n * sizeof(*C));
     for (i = 0; i < n; i++)
-        C[i] = malloc(n * sizeof(int));
+        C[i] = malloc(n * sizeof(*C[i]));
 
     GET_TIME(start);
-    thread_handles = malloc(thread_count * sizeof(pthread_t));
+    thread_handles = malloc(thread_count * sizeof(*thread_handles));
     for (i = 0; i < thread_count; ++i)
         pthread_create(&thread_handles[i], NULL, multiply_thread, (void *)i);
     for (i = 0; i < thread_count; ++i)
