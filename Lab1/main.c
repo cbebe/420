@@ -100,6 +100,7 @@ int main(int argc, const char **argv) {
     say_goodbye();
 #else
     do_experiment();
+    printf("Total running time: %f seconds\n", total);
 #endif
 
     return 0;
