@@ -66,7 +66,6 @@ int main(int argc, char *argv[]) {
             break;
         case 'b':
             bound = strtol(optarg, NULL, 10);
-            ;
             break;
         case 'p':
             b_print = 1;
