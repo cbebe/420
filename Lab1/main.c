@@ -63,7 +63,7 @@ void do_experiment() {
     double start, end;
     long thread;
     pthread_t *thread_handles;
-    Lab1_loadinput(&A, &B, &n);
+    if (Lab1_loadinput(&A, &B, &n) != 0) exit(1);
 
     if (n * n % thread_count != 0 || sqrt_p * sqrt_p != thread_count) {
         fprintf(stderr, "Not a valid p!");
@@ -84,7 +84,7 @@ void do_experiment() {
 
     GET_TIME(end);
     total = end - start;
-    Lab1_saveoutput(C, &n, total);
+    if (Lab1_saveoutput(C, &n, total) != 0) exit(1);
 }
 
 int main(int argc, const char **argv) {

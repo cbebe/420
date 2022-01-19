@@ -21,7 +21,7 @@ double total;
 int main(int argc, const char **argv) {
     int i, j, r;
     double start, end;
-    Lab1_loadinput(&A, &B, &n);
+    if (Lab1_loadinput(&A, &B, &n) != 0) exit(1);
 
     C = malloc(n * sizeof(int *));
     for (i = 0; i < n; i++)
@@ -37,6 +37,7 @@ int main(int argc, const char **argv) {
 
     GET_TIME(end);
     total = end - start;
-    Lab1_saveoutput(C, &n, total);
+    printf("Total running time: %f seconds\n", total);
+    if (Lab1_saveoutput(C, &n, total) != 0) exit(1);
     return 0;
 }
