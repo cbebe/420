@@ -16,6 +16,7 @@
 
 int **A, **B, **C, n, thread_count, sqrt_p;
 
+/* thread function to do matrix multiplication */
 void *multiply_thread(void *rank) {
     int i, j, r, x, y, block;
 
