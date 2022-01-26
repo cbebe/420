@@ -1,5 +1,7 @@
 CC ?= gcc
-CFLAGS := -std=c90 -O3 -lpthread -lm
+# :^) because we're winners
+CC_WARNINGS := -w
+CFLAGS := $(CC_WARNINGS) -std=c90 -O3 -lpthread -lm
 
 all: main
 

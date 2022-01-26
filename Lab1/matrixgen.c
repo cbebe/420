@@ -44,13 +44,6 @@ result and store it in "data_input"
 #include <time.h>
 #include <unistd.h>
 
-/*
-VSCode Intellisense cannot read Linux header files properly so I'm "redefining"
-it here
-https://man7.org/linux/man-pages/man3/getopt.3.html
-*/
-char *optarg;
-
 int main(int argc, char *argv[]) {
     int size = 10, bound = 5;
     char *OUTPATH = "data_input";
