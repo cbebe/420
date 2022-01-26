@@ -57,6 +57,6 @@ cp main ..
 cd - >/dev/null
 
 printf "${YELLOW}Testing executable...${RESTORE}\n"
-SIZE=${SIZE:-100} BOUND=${BOUND:-5} THREADS=${THREADS:-4} make test || die
+SIZE=${SIZE:-100} BOUND=${BOUND:-5} THREADS=${THREADS:-4} make -f dev.mk test || die
 
 cleanup

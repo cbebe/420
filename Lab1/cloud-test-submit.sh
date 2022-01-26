@@ -3,7 +3,7 @@
 RESTORE="\033[0m"
 PURPLE="\033[01;35m"
 
-make deploy
+make -f dev.mk deploy
 printf "${PURPLE}########################${RESTORE}\n"
 printf "${PURPLE}# SSHing into cloud VM #${RESTORE}\n"
 printf "${PURPLE}########################${RESTORE}\n"
