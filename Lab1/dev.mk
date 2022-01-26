@@ -8,6 +8,7 @@ SIZE ?= 100
 BOUND ?= 5
 THREADS ?= 4
 MEMBERS := $(shell cat members.txt)
+ZIP_CONTENTS = Code/ Members/
 
 test: new data_input main serialtester
 	./main $(THREADS)
@@ -23,7 +24,7 @@ new:
 	rm -f $(DATA)
 
 clean:
-	rm -f $(EXE) $(DATA) $(MEMBERS:%=%.zip)
+	rm -rf $(EXE) $(DATA) $(MEMBERS:%=%.zip) $(ZIP_CONTENTS) *.dSYM
 
 # Used for deploying code to our VM
 # Assumes that you have configured SSH to the VM as `cloud`
