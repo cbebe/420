@@ -61,9 +61,6 @@ double do_experiment() {
 
     // free dynamically allocated memory
     free(thread_handles);
-    for (i = 0; i < n; i++)
-        free(C[i]);
-    free(C);
 
     // stop the timer
     GET_TIME(end);
