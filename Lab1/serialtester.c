@@ -12,10 +12,19 @@ Compiling:
 #include "lab1_IO.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #ifdef DEV
 #include "dev.h"
 #endif
+
+/* Extracted from timer.h in the Development kit */
+#define GET_TIME(now)                                                          \
+    {                                                                          \
+        struct timeval t;                                                      \
+        gettimeofday(&t, NULL);                                                \
+        now = t.tv_sec + t.tv_usec / 1000000.0;                                \
+    }
 
 int main(int argc, char *argv[]) {
 
@@ -26,6 +35,7 @@ int main(int argc, char *argv[]) {
     int **A;
     int **B;
     int **C;
+    double start, end, p_time;
 
     Lab1_loadinput(&A, &B, &n);
 
@@ -37,6 +47,7 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < n; i++)
         C[i] = malloc(n * sizeof(int));
 
+    GET_TIME(start);
     /*Calculating*/
     for (i = 0; i < n; i++)
         for (j = 0; j < n; j++) {
@@ -44,6 +55,7 @@ int main(int argc, char *argv[]) {
             for (k = 0; k < n; k++)
                 C[i][j] += A[i][k] * B[k][j];
         }
+    GET_TIME(end);
     /*Testing*/
     if ((fp = fopen("data_output", "r")) == NULL) {
         printf("Fail to load the output data.\n");
@@ -66,6 +78,9 @@ int main(int argc, char *argv[]) {
 #else
         printf("The result is correct!\n");
 #endif
+        fscanf(fp, "\n%lf\n", &p_time);
+        printf("Serial: %f, Parallel: %f, Speedup: %f\n", end - start, p_time,
+               (end - start) / p_time);
     } else {
 #ifdef DEV
         log_str("The result is wrong.\n", RED);
