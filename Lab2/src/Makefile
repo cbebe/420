@@ -1,0 +1,22 @@
+# Submission Makefile
+NO_WARN := -Wno-implicit-function-declaration
+CFLAGS := -Wall -Wpedantic -std=c90 -O3 -lpthread
+
+BINS := main1 main2 main3 main4
+DEPOBJS := server.o operate.o common.o
+
+all: $(BINS)
+
+main%: op%.o $(DEPOBJS)
+	$(CC) $^ $(CFLAGS) -o $@
+
+%.o: %.c
+	$(CC) -c $< $(CFLAGS) -o $@
+
+common.o: common.c
+	$(CC) -c $< $(NO_WARN) $(CFLAGS) -o $@
+
+clean:
+	rm -f $(BINS) $(DEPOBJS)
+
+.PHONY: all clean

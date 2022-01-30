@@ -87,12 +87,14 @@ int PushPullMessage(char* str_msg, char* str_rcv){
     if(0 == connect(clientFileDiscriptor,(struct sockaddr*)&sock_var_,sizeof(sock_var_))){
         // Write
         if(0 > write(clientFileDiscriptor, str_msg, COM_BUFF_SIZE)){
+            perror("write");
             int errsv = errno;
             printf("write() failed with errno = %d. \n", errsv);
             exit(errsv);
         }
         // Read
         if(0 > read(clientFileDiscriptor,str_rcv,COM_BUFF_SIZE)){
+            perror("read");
             int errsv = errno;
             printf("read() failed with errno = %d. \n", errsv);
             exit(errsv);

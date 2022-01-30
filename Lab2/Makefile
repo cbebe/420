@@ -1,35 +1,52 @@
 # Development makefile
 CC ?= gcc
-CFLAGS := -Wall -Wpedantic -std=c90 -DDEV -g -lpthread -lm
+CFLAGS := -Wall -Wpedantic -std=c90 -O3 -g -lpthread
 
-EXE := matrixgen serialtester main serial
-DATA := data_input data_output
+BINS := main1 main2 main3 main4
+DATA :=
 
-SIZE ?= 100
-BOUND ?= 5
-THREADS ?= 4
 MEMBERS := $(shell cat members.txt)
-ZIP_CONTENTS = Code/ Members/
+ZIP_CONTENTS = Code/ Members/ Report/
 
-test: new data_input main serialtester
-	./main $(THREADS)
-	./serialtester
+SRCDIR := src
+OBJDIR := obj
 
-data_input: matrixgen
-	./matrixgen -s $(SIZE) -b $(BOUND)
+DEPS := server operate common
+SRCS := $(DEPS:%=$(SRCDIR)/%.c)
+OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-%: %.c lab1_IO.c
+all: $(BINS)
+
+main%: $(OBJDIR)/op%.o $(OBJS)
 	$(CC) $^ $(CFLAGS) -o $@
 
-new:
-	rm -f $(DATA)
+$(OBJDIR):
+	mkdir -p $@
+
+# Lets us keep intermediate files
+.SECONDARY:
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) -c $^ $(CFLAGS) -o $@
+
+DEVKIT_BINS := client attacker arrayRW
+
+kit: $(DEVKIT_BINS)
+
+%: devkit/%.c
+	cd devkit && $(MAKE) $@ && cp $@ ..
 
 clean:
-	rm -rf $(EXE) $(DATA) $(MEMBERS:%=%.zip) $(ZIP_CONTENTS) *.dSYM
+	rm -rf $(MEMBERS:%=%.zip) $(DATA) $(ZIP_CONTENTS) $(BINS) $(DEVKIT_BINS) $(OBJDIR) *.dSYM
 
 # Used for deploying code to our VM
 # Assumes that you have configured SSH to the VM as `cloud`
 deploy: clean
-	rsync -av . cloud:Lab2
+	rsync -av --exclude devkit . cloud:Lab2
 
-.PHONY: clean deploy test new
+report: lab_report.pdf
+
+# Pandoc is pretty bloated, up to you guys if you wanna use it
+%.pdf: %.md
+	pandoc $< -o $@ --pdf-engine=xelatex
+
+.PHONY: all clean deploy test report

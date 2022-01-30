@@ -66,6 +66,9 @@ void *Reader(void* rank) {
         int is_read = 1;
         int msg_idx = rand_r(&seed_[my_rank]) % NUM_MSG_;
         sprintf(str_msg, "%d-%d-%s", pos, is_read, msg_pool[msg_idx]); // encode the message and control signal into a single string
+        if (1 == COM_IS_VERBOSE){
+            printf("message: %s", str_msg);
+        }
         // Connect and request
         PushPullMessage(str_msg, str_rcv);
         // Test whether the message is valid

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 code_files=src
+lab_report=lab_report.pdf
 
 # Prompts the user for a student ID
 # in vars:
@@ -27,13 +28,16 @@ get_student_id() {
 # student_id - the student ID of the one handling the submission
 # code_files - a space-separated list of files (and directories)
 create_zip() {
-	mkdir -p Code Members
-	cp -r $code_files Code
+	dirs='Code Members Report'
+	mkdir -p $dirs
+	cp -r $code_files/ Code/
 	cp members.txt Members
-	zip -r ${student_id}.zip Code Members >/dev/null
-	rm -rf Code Members
+	cp $lab_report Report
+	zip -r ${student_id}.zip $dirs >/dev/null
+	rm -rf $dirs
 	echo "Submission stored in $student_id.zip"
 }
 
 get_student_id
+make report
 create_zip
