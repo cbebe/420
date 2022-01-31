@@ -1,6 +1,6 @@
 # Development makefile
 CC ?= gcc
-CFLAGS := -Wall -Wpedantic -g -lpthread
+CFLAGS := -Wall -Wpedantic -O3 -lpthread
 
 BINS := main1 main2 main3 main4
 DATA :=

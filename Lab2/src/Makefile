@@ -1,6 +1,6 @@
 # Submission Makefile
 NO_WARN := -Wno-implicit-function-declaration
-CFLAGS := -Wall -Wpedantic -std=c90 -O3 -lpthread
+CFLAGS := -Wall -Wpedantic -O3 -lpthread
 
 BINS := main1 main2 main3 main4
 DEPOBJS := server.o operate.o common.o
