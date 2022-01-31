@@ -1,11 +1,11 @@
 #include "operate.h"
 #include "common.h"
 #include "timer.h"
+#include <assert.h>
 #include <stdio.h>
 #include <unistd.h>
 
 static char **strArray;
-static double times[COM_NUM_REQUEST];
 static int arrSize;
 
 void *HandleRequest(void *args) {
@@ -15,15 +15,9 @@ void *HandleRequest(void *args) {
     ClientRequest req;
 
     read(clientFd, str, 128);
-    if (COM_IS_VERBOSE) printf("reading from client:%s\n", str);
-
-    /* Not sure if message parsing is included in the performance time. I'm
-     * thinking it shouldn't be */
+    /* Not sure if message parsing is included in the performance time.
+     * I think it shouldn't be */
     ParseMsg(str, &req);
-
-    if (COM_IS_VERBOSE)
-        printf("idx: %d\tread: %c\tmsg: %s", req.pos, req.is_read ? 'y' : 'n',
-               req.msg);
 
     GET_TIME(start);
     if (!req.is_read) writeArr(req.msg, req.pos, strArray);
@@ -42,9 +36,10 @@ void initArr(int size) {
     int i;
     arrSize = size;
     strArray = malloc(sizeof(*strArray) * arrSize);
-    init();
+    init_locks(size);
     for (i = 0; i < arrSize; ++i) {
         strArray[i] = malloc(sizeof(*strArray[i]) * COM_BUFF_SIZE);
+        assert(strArray[i] != NULL);
         sprintf(strArray[i], "String %d: the initial string", i);
     }
 }

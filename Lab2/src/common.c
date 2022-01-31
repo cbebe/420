@@ -4,7 +4,6 @@
 #include <string.h>
 #include <unistd.h>
 
-/* strsep isn't even defined in C90 */
 int ParseMsg(char *msg, ClientRequest *rqst) {
     char *token;
     token = strsep(&msg, "-");

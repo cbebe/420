@@ -9,7 +9,7 @@
 /**
  * @brief Initializes any mutexes needed by the implementation
  */
-void init();
+void init_locks(int size);
 
 /**
  * @brief Wraps getContent in a critical section

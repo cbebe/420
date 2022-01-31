@@ -1,6 +1,6 @@
 # Development makefile
 CC ?= gcc
-CFLAGS := -Wall -Wpedantic -std=c90 -O3 -g -lpthread
+CFLAGS := -Wall -Wpedantic -g -lpthread
 
 BINS := main1 main2 main3 main4
 DATA :=
@@ -17,7 +17,7 @@ OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 all: $(BINS)
 
-main%: $(OBJDIR)/op%.o $(OBJS)
+main%: $(OBJDIR)/scheme%.o $(OBJS)
 	$(CC) $^ $(CFLAGS) -o $@
 
 $(OBJDIR):
@@ -36,12 +36,13 @@ kit: $(DEVKIT_BINS)
 	cd devkit && $(MAKE) $@ && cp $@ ..
 
 clean:
+	cd devkit && $(MAKE) clean
 	rm -rf $(MEMBERS:%=%.zip) $(DATA) $(ZIP_CONTENTS) $(BINS) $(DEVKIT_BINS) $(OBJDIR) *.dSYM
 
 # Used for deploying code to our VM
 # Assumes that you have configured SSH to the VM as `cloud`
 deploy: clean
-	rsync -av --exclude devkit . cloud:Lab2
+	rsync -av . cloud:Lab2
 
 report: lab_report.pdf
 

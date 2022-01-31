@@ -7,7 +7,7 @@ DEPOBJS := server.o operate.o common.o
 
 all: $(BINS)
 
-main%: op%.o $(DEPOBJS)
+main%: scheme%.o $(DEPOBJS)
 	$(CC) $^ $(CFLAGS) -o $@
 
 %.o: %.c
