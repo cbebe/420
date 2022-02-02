@@ -1,6 +1,6 @@
 # Development makefile
 CC ?= gcc
-CFLAGS := -Wall -Wpedantic -O3 -lpthread
+CFLAGS := -Wall -Wpedantic -O3
 
 BINS := main1 main2 main3 main4
 DATA :=
@@ -18,7 +18,7 @@ OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 all: $(BINS)
 
 main%: $(OBJDIR)/scheme%.o $(OBJS)
-	$(CC) $^ $(CFLAGS) -o $@
+	$(CC) $^ $(CFLAGS) -o $@ -lpthread
 
 $(OBJDIR):
 	mkdir -p $@

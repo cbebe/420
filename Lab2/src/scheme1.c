@@ -24,6 +24,7 @@ void readArr(char *dest, int index, char **strArray) {
     getContent(dest, index, strArray);
     pthread_mutex_unlock(&arrayLock);
 }
+
 void writeArr(char *src, int index, char **strArray) {
     pthread_mutex_lock(&arrayLock);
     setContent(src, index, strArray);
