@@ -1,4 +1,6 @@
 #!/bin/bash
+# WARNING: This is really unstable and resource-heavy
+# You're better off running the tests serially to have more accurate results
 
 port_num=${PORT:-3000}
 host=127.0.0.1
@@ -10,6 +12,9 @@ run_test() {
   sleep 0.5
   pid=$REPLY
   ./scripts/test.sh $n $host $port_num >/dev/null
+
+  mean_access_time=$(./mean output-scheme${scheme}-${n})
+  printf "$scheme,$n,$mean_access_time\n" >> $mean_file
   kill $pid
 }
 
@@ -41,4 +46,4 @@ run_test 4 1000 & >/dev/null
 wait
 total_end=$EPOCHREALTIME
 echo $total_end
-echo "Whole test lasted for $(awk 'BEGIN{print $total_end-$total_start}') seconds"
+echo "Whole test lasted for $(awk "BEGIN{print $total_end-$total_start}") seconds"

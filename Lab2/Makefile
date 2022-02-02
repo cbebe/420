@@ -18,7 +18,10 @@ all: $(BINS)
 main%: $(SRCDIR)/scheme%.c $(SRCS)
 	cd src && $(MAKE) $@ && cp $@ ..
 
-test: $(BINS) client
+mean: $(SRCDIR)/mean.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+test: $(BINS) client mean
 	PORT=$(PORT) ./scripts/test-all.sh
 
 DEVKIT_BINS := client attacker arrayRW

@@ -6,6 +6,9 @@
 attacker
 client
 arrayRW
+mean
+
+mean-access-times
 
 lab_report.pdf
 server_output_time_aggregated
