@@ -24,8 +24,6 @@ arraysize=${1}
 # IP of the server
 IP=${2}
 
-clear
-
 echo "Start..."
 ATTEMPT=0
 while [[ $ATTEMPT -ne $Duplicates ]]; do
