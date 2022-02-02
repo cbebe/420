@@ -1,0 +1,11 @@
+.vscode
+/main*
+/src/main*
+obj
+
+attacker
+client
+arrayRW
+
+lab_report.pdf
+server_output_time_aggregated
