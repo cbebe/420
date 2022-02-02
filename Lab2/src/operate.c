@@ -1,7 +1,6 @@
 #include "operate.h"
 #include "common.h"
 #include "timer.h"
-#include <assert.h>
 #include <stdio.h>
 #include <unistd.h>
 
@@ -32,19 +31,18 @@ void *HandleRequest(void *args) {
     return result;
 }
 
-void initArr(int size) {
+void InitArr(int size) {
     int i;
     arrSize = size;
     strArray = malloc(sizeof(*strArray) * arrSize);
-    init_locks(size);
+    initLocks(size);
     for (i = 0; i < arrSize; ++i) {
         strArray[i] = malloc(sizeof(*strArray[i]) * COM_BUFF_SIZE);
-        assert(strArray[i] != NULL);
         sprintf(strArray[i], "String %d: the initial string", i);
     }
 }
 
-void destroyArr() {
+void DestroyArr() {
     int i;
     for (i = 0; i < arrSize; ++i)
         free(strArray[i]);

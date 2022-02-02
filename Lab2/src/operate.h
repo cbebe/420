@@ -9,7 +9,7 @@
 /**
  * @brief Initializes any mutexes needed by the implementation
  */
-void init_locks(int size);
+void initLocks(int size);
 
 /**
  * @brief Wraps getContent in a critical section
@@ -34,12 +34,12 @@ void writeArr(char *src, int index, char **strArray);
  *
  * @param size the size of the string array
  */
-void initArr(int size);
+void InitArr(int size);
 
 /**
  * @brief Deallocates the string array
  */
-void destroyArr();
+void DestroyArr();
 
 /**
  * @brief Handles a single request

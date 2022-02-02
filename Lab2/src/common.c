@@ -47,8 +47,7 @@ void saveTimes(double *time, int length) {
     }
     elapsed_time /= length;
     if ((op = fopen("server_output_time_aggregated", "a+")) == NULL) {
-        printf(
-            "Error opening the output file: server_output_time_aggregated.\n");
+        fprintf(stderr, "Error opening the output file: server_output_time_aggregated.\n");
         exit(1);
     }
     fprintf(op, "%e\n", elapsed_time);

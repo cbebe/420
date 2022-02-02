@@ -9,38 +9,42 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+static void usage(const char *progName) {
+    fprintf(stderr, "usage: %s <Size of theArray_ on server> <server ip> <server port>\n",
+            progName);
+    exit(1);
+}
+
 int main(int argc, char *argv[]) {
-    int serverFd = socket(AF_INET, SOCK_STREAM, 0);
+    int serverFd, clientFd, i;
     long arrSize;
-    int i, clientFd;
     pthread_t t[COM_NUM_REQUEST];
     double times[COM_NUM_REQUEST];
     void *time;
     struct sockaddr_in sock_var;
+
+    if (argc != 4) usage(argv[0]);
+
     sock_var.sin_addr.s_addr = inet_addr(argv[2]);
     sock_var.sin_port = strtol(argv[3], NULL, 10);
     sock_var.sin_family = AF_INET;
 
-    if (argc != 4) {
-        fprintf(stderr,
-                "usage: %s <Size of theArray_ on server> <server ip> "
-                "<server port>\n",
-                argv[0]);
-        return 1;
-    }
+    if (sock_var.sin_port <= 0) usage(argv[0]);
 
     arrSize = strtol(argv[1], NULL, 10);
 
+    if (arrSize <= 0) usage(argv[0]);
+    serverFd = socket(AF_INET, SOCK_STREAM, 0);
+
     if (bind(serverFd, (struct sockaddr *)&sock_var, sizeof(sock_var)) >= 0) {
-        printf("socket has been created\n");
-        initArr(arrSize);
-        listen(serverFd, 20000);
+        if (COM_IS_VERBOSE) printf("socket has been created\n");
+        InitArr(arrSize);
+        listen(serverFd, 2000);
         while (1) {
             /* can support COM_NUM_REQUEST clients at a time */
             for (i = 0; i < COM_NUM_REQUEST; i++) {
                 clientFd = accept(serverFd, NULL, NULL);
-                pthread_create(&t[i], NULL, HandleRequest,
-                               (void *)(long)clientFd);
+                pthread_create(&t[i], NULL, HandleRequest, (void *)(long)clientFd);
             }
 
             for (i = 0; i < COM_NUM_REQUEST; i++) {
@@ -51,7 +55,7 @@ int main(int argc, char *argv[]) {
             saveTimes(times, COM_NUM_REQUEST);
         }
         close(serverFd);
-        destroyArr();
+        DestroyArr();
     } else {
         fprintf(stderr, "socket creation failed\n");
         return 1;
