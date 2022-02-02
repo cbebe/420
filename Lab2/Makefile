@@ -11,7 +11,7 @@ ZIP_CONTENTS = Code/ Members/ Report/
 SRCDIR := src
 OBJDIR := obj
 
-DEPS := server operate common
+DEPS := server operate common read_write_lock
 SRCS := $(DEPS:%=$(SRCDIR)/%.c)
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
