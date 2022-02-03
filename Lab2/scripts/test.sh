@@ -16,15 +16,16 @@ if [ $# -lt 3 ]; then
 fi
 
 # Parameters
-Duplicates=100
+# This takes so damn long on Duplicates=100 (~50 seconds each test)
+# test-all.sh takes ~50 seconds on Duplicates=5
+# Maybe we'll do that for the final report
+Duplicates=5
 # Port Number
 port=${3}
 # The number of strings in theArray
 arraysize=${1}
 # IP of the server
 IP=${2}
-
-clear
 
 echo "Start..."
 ATTEMPT=0

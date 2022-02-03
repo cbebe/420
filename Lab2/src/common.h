@@ -59,5 +59,6 @@ void getContent(char *dst, int pos, char **theArray);
 /* Function to save the measured time */
 /* Input: time: pointer to the array that store the time for each request */
 /*        length: length of the time */
-void saveTimes(double *time, int length);
+/*        fileName: name of the file */
+void saveTimes(double *time, int length, const char *fileName);
 #endif

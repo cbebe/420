@@ -1,13 +1,17 @@
 #include "common.h"
 #include "operate.h"
 #include <arpa/inet.h>
+#include <errno.h>
 #include <netinet/in.h>
 #include <pthread.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+int serverFd;
 
 static void usage(const char *progName) {
     fprintf(stderr, "usage: %s <Size of theArray_ on server> <server ip> <server port>\n",
@@ -15,13 +19,19 @@ static void usage(const char *progName) {
     exit(1);
 }
 
+static void sigtermHandler(int sig) {
+    close(serverFd);
+    exit(0);
+}
+
 int main(int argc, char *argv[]) {
-    int serverFd, clientFd, i;
+    int clientFd, i;
     long arrSize;
     pthread_t t[COM_NUM_REQUEST];
     double times[COM_NUM_REQUEST];
     void *time;
     struct sockaddr_in sock_var;
+    char fileName[COM_BUFF_SIZE];
 
     if (argc != 4) usage(argv[0]);
 
@@ -34,7 +44,13 @@ int main(int argc, char *argv[]) {
     arrSize = strtol(argv[1], NULL, 10);
 
     if (arrSize <= 0) usage(argv[0]);
+
+    sprintf(fileName, "output-scheme%c-%ld", argv[0][strlen(argv[0]) - 1], arrSize);
+    /* if we're starting this out, we don't want to append to an existing file */
+    remove(fileName);
+
     serverFd = socket(AF_INET, SOCK_STREAM, 0);
+    signal(SIGTERM, sigtermHandler);
 
     if (bind(serverFd, (struct sockaddr *)&sock_var, sizeof(sock_var)) >= 0) {
         if (COM_IS_VERBOSE) printf("socket has been created\n");
@@ -52,13 +68,14 @@ int main(int argc, char *argv[]) {
                 times[i] = *(double *)time;
                 free(time);
             }
-            saveTimes(times, COM_NUM_REQUEST);
+            saveTimes(times, COM_NUM_REQUEST, fileName);
+            if (COM_IS_VERBOSE) printf("Saved times to file %s\n", fileName);
         }
         close(serverFd);
         DestroyArr();
     } else {
-        fprintf(stderr, "socket creation failed\n");
-        return 1;
+        perror("bind");
+        return 98;
     }
 
     return 0;
