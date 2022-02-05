@@ -12,6 +12,11 @@
 void initLocks(int size);
 
 /**
+ * @brief Destroys any mutexes used by the implementation
+ */
+void destroyLocks();
+
+/**
  * @brief Wraps getContent in a critical section
  *
  * @param dest the destination string
@@ -45,7 +50,7 @@ void DestroyArr();
  * @brief Handles a single request
  *
  * @param args the client file descriptor (passed as int)
- * @return void* NULL
+ * @return double* pointer to the access time of the request (must be deallocated later)
  */
 void *HandleRequest(void *args);
 

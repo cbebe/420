@@ -1,3 +1,9 @@
+/**
+ * @file common.c
+ * @brief Instructor-provided common functionality needed by the server
+ *
+ * The definitions are separated to avoid conflict from multiple includes
+ */
 #ifndef _LAB2_COMMON_H_
 #define _LAB2_COMMON_H_
 #include <stdio.h>
@@ -41,8 +47,8 @@ typedef struct {
 
 /* parse the massage from client and get the control info and message info */
 /* Input: msg: message string with format "pos-is_read-XXXXXXX" */
-/*        rqst: previously allocated stucture to store the parsed result */
-int ParseMsg(char *msg, ClientRequest *rqst);
+/*        req: previously allocated stucture to store the parsed result */
+int ParseMsg(char *msg, ClientRequest *req);
 
 /* Function to set the server string array */
 /* Input: src: source string to save */

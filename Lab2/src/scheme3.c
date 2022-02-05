@@ -8,8 +8,6 @@
  * @copyright Copyright (c) 2022
  *
  * Uses a single read/write lock to protect the entire array
- *
- * TODO: Implement using a read/write lock
  */
 #include "common.h"
 #include "operate.h"
@@ -22,6 +20,8 @@ void initLocks(int size) {
     RWLockInit(&arrayLock);
     if (COM_IS_VERBOSE) printf("initialize read-write lock for array of size %d\n", size);
 }
+
+void destroyLocks() { RWLockDestroy(&arrayLock); }
 
 void readArr(char *dest, int index, char **strArray) {
     RWLockRLock(&arrayLock);

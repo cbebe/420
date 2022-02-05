@@ -1,7 +1,20 @@
+/**
+ * @file mean.c
+ * @author Charles Ancheta, Patricia Zafra, Michelle Lee
+ * @brief Reads a file of doubles line by line and outputs the mean
+ * @version 0.1
+ * @date 2022-02-02
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/* Since the files should only contain doubles,
+ * the lines shouldn't really exceed ~16 characters.
+ * But of course we're trying to be safe */
 #define MAX_LEN 256
 /* Maximum number of entries in the file */
 #define NUM_ENTRIES 100
@@ -23,7 +36,7 @@ int main(int argc, const char **argv) {
     }
 
     times = malloc(NUM_ENTRIES * sizeof(*times));
-    while (fgets(buf, MAX_LEN, infile)) {
+    while (fgets(buf, MAX_LEN, infile) && numTimes <= NUM_ENTRIES) {
         sscanf(buf, "%lf", &time);
         times[numTimes++] = time;
     }

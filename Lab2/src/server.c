@@ -1,3 +1,13 @@
+/**
+ * @file server.c
+ * @author Charles Ancheta, Patricia Zafra, Michelle Lee
+ * @brief Functions containing the main server functionality
+ * @version 0.1
+ * @date 2022-02-03
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #include "common.h"
 #include "operate.h"
 #include <arpa/inet.h>
@@ -13,6 +23,10 @@
 
 int serverFd;
 
+/**
+ * @brief Prints usage
+ * @param progName the name of the program, available as argv[0]
+ */
 static void usage(const char *progName) {
     fprintf(stderr, "usage: %s <Size of theArray_ on server> <server ip> <server port>\n",
             progName);

@@ -1,3 +1,13 @@
+/**
+ * @file operate.c
+ * @author Charles Ancheta, Patricia Zafra, Michelle Lee
+ * @brief Provides an interface for the server to operate on the protected data structure
+ * @version 0.1
+ * @date 2022-02-02
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #include "operate.h"
 #include "common.h"
 #include "timer.h"
@@ -44,6 +54,7 @@ void InitArr(int size) {
 
 void DestroyArr() {
     int i;
+    destroyLocks();
     for (i = 0; i < arrSize; ++i)
         free(strArray[i]);
     free(strArray);
