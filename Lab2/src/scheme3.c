@@ -18,9 +18,9 @@
 
 static rwlock_t arrayLock;
 
-void init_locks(int size) {
+void initLocks(int size) {
     rwlock_init(&arrayLock);
-    printf("initialize read-write lock for array of size %d\n", size);
+    if (COM_IS_VERBOSE) printf("initialize read-write lock for array of size %d\n", size);
 }
 
 void readArr(char *dest, int index, char **strArray) {

@@ -17,8 +17,8 @@
 
 static pthread_mutex_t arrayLock = PTHREAD_MUTEX_INITIALIZER;
 
-void init_locks(int size) {
-    printf("initialize mutex for array of size %d\n", size);
+void initLocks(int size) {
+    if (COM_IS_VERBOSE) printf("initialize mutex for array of size %d\n", size);
 }
 
 void readArr(char *dest, int index, char **strArray) {

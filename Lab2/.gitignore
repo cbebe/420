@@ -1,11 +1,18 @@
 .vscode
 /main*
 /src/main*
-obj
+/src/*.o
 
 attacker
 client
 arrayRW
+mean
+
+mean-access-times
 
 lab_report.pdf
 server_output_time_aggregated
+
+output-scheme*
+
+testrun*

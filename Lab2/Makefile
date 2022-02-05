@@ -3,30 +3,26 @@ CC ?= gcc
 CFLAGS := -Wall -Wpedantic -O3
 
 BINS := main1 main2 main3 main4
-DATA :=
+DATA := output-scheme*
 
 MEMBERS := $(shell cat members.txt)
 ZIP_CONTENTS = Code/ Members/ Report/
 
 SRCDIR := src
-OBJDIR := obj
 
 DEPS := server operate common read_write_lock
 SRCS := $(DEPS:%=$(SRCDIR)/%.c)
-OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 all: $(BINS)
 
-main%: $(OBJDIR)/scheme%.o $(OBJS)
-	$(CC) $^ $(CFLAGS) -o $@ -lpthread
+main%: $(SRCDIR)/scheme%.c $(SRCS)
+	cd src && $(MAKE) $@ && cp $@ ..
 
-$(OBJDIR):
-	mkdir -p $@
+mean: $(SRCDIR)/mean.c
+	$(CC) $(CFLAGS) -o $@ $<
 
-# Lets us keep intermediate files
-.SECONDARY:
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) -c $^ $(CFLAGS) -o $@
+test: $(BINS) client mean
+	PORT=$(PORT) ./scripts/test-all.sh
 
 DEVKIT_BINS := client attacker arrayRW
 
@@ -37,7 +33,8 @@ kit: $(DEVKIT_BINS)
 
 clean:
 	cd devkit && $(MAKE) clean
-	rm -rf $(MEMBERS:%=%.zip) $(DATA) $(ZIP_CONTENTS) $(BINS) $(DEVKIT_BINS) $(OBJDIR) *.dSYM
+	cd src && $(MAKE) clean
+	rm -rf $(MEMBERS:%=%.zip) $(DATA) $(ZIP_CONTENTS) $(BINS) $(DEVKIT_BINS) *.dSYM
 
 # Used for deploying code to our VM
 # Assumes that you have configured SSH to the VM as `cloud`
