@@ -19,6 +19,8 @@ void initLocks(int size) {
     if (COM_IS_VERBOSE) printf("initialize mutex for array of size %d\n", size);
 }
 
+void destroyLocks() { pthread_mutex_destroy(&arrayLock); }
+
 void readArr(char *dest, int index, char **strArray) {
     pthread_mutex_lock(&arrayLock);
     getContent(dest, index, strArray);

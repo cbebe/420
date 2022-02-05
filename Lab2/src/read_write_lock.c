@@ -1,3 +1,13 @@
+/**
+ * @file read_write_lock.c
+ * @author Charles Ancheta, Patricia Zafra, Michelle Lee
+ * @brief Read-write lock used for protecting the data structure
+ * @version 0.1
+ * @date 2022-02-05
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #include "read_write_lock.h"
 #include <pthread.h>
 
@@ -6,6 +16,12 @@ void RWLockInit(RWLock_t *lock) {
     pthread_mutex_init(&(lock->read_write_lock), NULL);
     pthread_cond_init(&(lock->readers_proceed), NULL);
     pthread_cond_init(&(lock->writer_proceed), NULL);
+}
+
+void RWLockDestroy(RWLock_t *lock) {
+    pthread_mutex_destroy(&(lock->read_write_lock));
+    pthread_cond_destroy(&(lock->readers_proceed));
+    pthread_cond_destroy(&(lock->writer_proceed));
 }
 
 void RWLockRLock(RWLock_t *lock) {

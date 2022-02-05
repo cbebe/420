@@ -1,17 +1,24 @@
+/**
+ * @file common.c
+ * @brief Instructor-provided common functionality needed by the server
+ *
+ * This needed to be declared in an actual source file instead of being a header-only library to
+ * avoid conflicting includes
+ */
 #include "common.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-int ParseMsg(char *msg, ClientRequest *rqst) {
+int ParseMsg(char *msg, ClientRequest *req) {
     char *token;
     token = strsep(&msg, "-");
-    rqst->pos = atoi(token);
+    req->pos = atoi(token);
     token = strsep(&msg, "-");
-    rqst->is_read = atoi(token);
+    req->is_read = atoi(token);
     token = strsep(&msg, "-");
-    memcpy(rqst->msg, token, strlen(token) + 1);
+    memcpy(req->msg, token, strlen(token) + 1);
     return 0;
 }
 
@@ -35,21 +42,18 @@ void getContent(char *dst, int pos, char **theArray) {
     }
 }
 
-/* Function to save the measured time */
-/* Input: time: pointer to the array that store the time for each request */
-/*        length: length of the time */
 void saveTimes(double *time, int length, const char *fileName) {
     FILE *op;
     int i;
-    double elapsed_time = 0;
+    double elapsedTime = 0;
     for (i = 0; i < length; ++i) {
-        elapsed_time += time[i];
+        elapsedTime += time[i];
     }
-    elapsed_time /= length;
+    elapsedTime /= length;
     if ((op = fopen(fileName, "a+")) == NULL) {
         fprintf(stderr, "Error opening the output file: %s.\n", fileName);
         exit(1);
     }
-    fprintf(op, "%e\n", elapsed_time);
+    fprintf(op, "%e\n", elapsedTime);
     fclose(op);
 }

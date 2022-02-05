@@ -24,6 +24,13 @@ typedef struct {
 void RWLockInit(RWLock_t *lock);
 
 /**
+ * @brief Destroy the read-write lock
+ *
+ * @param lock the read-write lock
+ */
+void RWLockDestroy(RWLock_t *lock);
+
+/**
  * @brief A lock on reads
  *        Perform a wait if there is a write lock or pending writers
  *
