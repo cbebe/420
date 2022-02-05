@@ -33,5 +33,6 @@ while [[ $ATTEMPT -ne $Duplicates ]]; do
 	let ATTEMPT+=1
 	echo "Attempt ${ATTEMPT} started."
 	./client $arraysize $IP $port
+	./attacker $arraysize $IP $port
 	sleep 0.5
 done

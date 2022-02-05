@@ -18,7 +18,7 @@ static int arraySize;
 
 void initLocks(int size) {
     int i;
-    arraySize = 0;
+    arraySize = size;
     arrayLocks = malloc(size * sizeof(*arrayLocks));
     for (i = 0; i < size; ++i)
         pthread_mutex_init(&arrayLocks[i], NULL);
