@@ -16,21 +16,21 @@
 #include "read_write_lock.h"
 #include <pthread.h>
 
-static rwlock_t arrayLock;
+static RWLock_t arrayLock;
 
 void initLocks(int size) {
-    rwlock_init(&arrayLock);
+    RWLockInit(&arrayLock);
     if (COM_IS_VERBOSE) printf("initialize read-write lock for array of size %d\n", size);
 }
 
 void readArr(char *dest, int index, char **strArray) {
-    rwlock_rlock(&arrayLock);
+    RWLockRLock(&arrayLock);
     getContent(dest, index, strArray);
-    rwlock_unlock(&arrayLock);
+    RWLockUnlock(&arrayLock);
 }
 
 void writeArr(char *src, int index, char **strArray) {
-    rwlock_wlock(&arrayLock);
+    RWLockWLock(&arrayLock);
     setContent(src, index, strArray);
-    rwlock_unlock(&arrayLock);
+    RWLockUnlock(&arrayLock);
 }
