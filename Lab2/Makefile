@@ -10,7 +10,7 @@ ZIP_CONTENTS = Code/ Members/ Report/
 
 SRCDIR := src
 
-DEPS := server operate common
+DEPS := server operate common read_write_lock
 SRCS := $(DEPS:%=$(SRCDIR)/%.c)
 
 all: $(BINS)

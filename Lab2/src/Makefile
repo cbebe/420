@@ -3,7 +3,7 @@ NO_WARN := -Wno-implicit-function-declaration
 CFLAGS := -Wall -Wpedantic -O3
 
 BINS := main1 main2 main3 main4
-DEPOBJS := server.o operate.o common.o
+DEPOBJS := server.o operate.o common.o read_write_lock.o
 
 all: $(BINS)
 

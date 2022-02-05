@@ -13,21 +13,24 @@
  */
 #include "common.h"
 #include "operate.h"
+#include "read_write_lock.h"
 #include <pthread.h>
 
-static pthread_mutex_t arrayLock = PTHREAD_MUTEX_INITIALIZER;
+static RWLock_t arrayLock;
 
 void initLocks(int size) {
-    if (COM_IS_VERBOSE) printf("initialize mutex for array of size %d\n", size);
+    RWLockInit(&arrayLock);
+    if (COM_IS_VERBOSE) printf("initialize read-write lock for array of size %d\n", size);
 }
 
 void readArr(char *dest, int index, char **strArray) {
-    pthread_mutex_lock(&arrayLock);
+    RWLockRLock(&arrayLock);
     getContent(dest, index, strArray);
-    pthread_mutex_unlock(&arrayLock);
+    RWLockUnlock(&arrayLock);
 }
+
 void writeArr(char *src, int index, char **strArray) {
-    pthread_mutex_lock(&arrayLock);
+    RWLockWLock(&arrayLock);
     setContent(src, index, strArray);
-    pthread_mutex_unlock(&arrayLock);
+    RWLockUnlock(&arrayLock);
 }
