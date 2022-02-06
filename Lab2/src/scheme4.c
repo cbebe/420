@@ -13,23 +13,35 @@
  */
 #include "common.h"
 #include "operate.h"
+#include "read_write_lock.h"
 #include <pthread.h>
 
-static pthread_mutex_t arrayLock = PTHREAD_MUTEX_INITIALIZER;
+static RWLock_t *arrayLocks;
+static int arraySize;
 
 void initLocks(int size) {
-    if (COM_IS_VERBOSE) printf("initialize mutex for array of size %d\n", size);
+    int i;
+    arraySize = size;
+    arrayLocks = malloc(size * sizeof(*arrayLocks));
+    for (i = 0; i < size; ++i)
+        RWLockInit(&arrayLocks[i]);
+    if (COM_IS_VERBOSE) printf("initialize %d read-write locks for array of size %d\n", size, size);
 }
 
-void destroyLocks() { pthread_mutex_destroy(&arrayLock); }
+void destroyLocks() {
+    int i;
+    for (i = 0; i < arraySize; ++i)
+        RWLockDestroy(&arrayLocks[i]);
+    free(arrayLocks);
+}
 
 void readArr(char *dest, int index, char **strArray) {
-    pthread_mutex_lock(&arrayLock);
+    RWLockRLock(&arrayLocks[index]);
     getContent(dest, index, strArray);
-    pthread_mutex_unlock(&arrayLock);
+    RWLockUnlock(&arrayLocks[index]);
 }
 void writeArr(char *src, int index, char **strArray) {
-    pthread_mutex_lock(&arrayLock);
+    RWLockWLock(&arrayLocks[index]);
     setContent(src, index, strArray);
-    pthread_mutex_unlock(&arrayLock);
+    RWLockUnlock(&arrayLocks[index]);
 }
