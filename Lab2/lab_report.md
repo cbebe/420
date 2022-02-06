@@ -8,6 +8,35 @@ author: Charles Ancheta, Michelle Lee, Patricia Zafra
 
 # Description of Implementation
 
+### Scheme 1: A Single Mutex Protecting the Entire Array
+
+### Scheme 2: Multiple Mutexes, Each Protecting a Different String
+
+### Scheme 3: A Single Read-Write Lock Protecting the Entire Array
+
+For this scheme, a read-write lock was implemented as a struct which contains the necessary attributes:
+
+- The number of readers, writers, and pending writers
+- A single mutex, which acts as the lock
+- Two conditions for either the reader or writer to proceed
+
+The read lock does a condition wait if there is an active writer or pending writers. When it is done waiting, the number of readers is incremented, and it is granted access to read the content from the array. The write lock does a condition wait if there are active readers or an active writer, and the number of pending writers is incremented. When granted access to the lock, the number of pending writers is decremented, the number of writers is incremented, and it writes to the array.
+
+The read-write lock is unlocked under the following conditions:
+
+- If there is a write lock, then unlock and clear the number of writers
+- If there are multiple active readers, then decrement the number of readers and let the pending readers proceed to flush all pending readers
+- If there are no more pending or active readers and there is a pending writer, let the writer proceed
+- If there are no pending writers, let any pending readers through
+
+Upon the end of the string array, the lock is destroyed.
+
+### Scheme 4: Multiple Read-Write Locks, Each Protecting a Different String
+
+In this scheme, multiple read-write locks are initialized for each string in the array. In other words, we are maintaining an array of read-write locks of size _n_, the size of the array. This way, when a read or write to the _i_-th string of the array is performed, the _i_-th lock will protect it.
+
+Upon the end of the string array, the array of locks is destroyed and memory allocated to the array of locks is freed.
+
 # Performance Discussion
 
 | n    | Scheme 1     | Scheme 2     | Scheme 3     | Scheme 4     |
