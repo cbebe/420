@@ -8,9 +8,16 @@ author: Charles Ancheta, Michelle Lee, Patricia Zafra
 
 # Description of Implementation
 
+The main program uses a multi-threaded implementation of a socket server, serving 1000 requests at a time before writing the average access time of those 1000 requests. The thread function `HandleRequest` parses the client message and depending on the request, makes calls to `readArr` and `writeArr` to modify the data array.  
+`readArr` and `writeArr`, along with `initLocks` and `destroyLocks` are implemented differently based on the data protection scheme. These functions are then linked to the main program using the Makefile, letting us have "polymorphism" in C.
+
 ### Scheme 1: A Single Mutex Protecting the Entire Array
 
+For this scheme, a mutex was used to protect the entire array using the POSIX built-in `pthread_mutex_t`. All calls to `getContent` and `setContent` (provided functions) were wrapped in calls to the `pthread_mutex_lock` and `pthread_mutex_unlock` functions.
+
 ### Scheme 2: Multiple Mutexes, Each Protecting a Different String
+
+For this scheme, an array of `pthread_mutex_t` of size _n_ `arrayLocks` is allocated and initialized. The calls to `getContent` and `setContent` are still wrapped in the `pthread_mutex` calls, but use different `pthread_mutex_t`s accessed from `arrayLocks` using the string index.
 
 ### Scheme 3: A Single Read-Write Lock Protecting the Entire Array
 
