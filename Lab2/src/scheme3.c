@@ -13,6 +13,7 @@
 #include "operate.h"
 #include "read_write_lock.h"
 #include <pthread.h>
+#include <stdio.h>
 
 static RWLock_t arrayLock;
 

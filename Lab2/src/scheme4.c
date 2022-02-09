@@ -15,6 +15,8 @@
 #include "operate.h"
 #include "read_write_lock.h"
 #include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 static RWLock_t *arrayLocks;
 static int arraySize;

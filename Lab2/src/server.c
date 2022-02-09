@@ -11,31 +11,21 @@
 #include "common.h"
 #include "operate.h"
 #include <arpa/inet.h>
-#include <errno.h>
-#include <netinet/in.h>
 #include <pthread.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/socket.h>
-#include <sys/types.h>
+#include <string.h>
 #include <unistd.h>
 
 int serverFd;
 
 /**
- * @brief Prints usage
+ * @brief Prints usage and exits
  * @param progName the name of the program, available as argv[0]
  */
 static void usage(const char *progName) {
-    fprintf(stderr, "usage: %s <Size of theArray_ on server> <server ip> <server port>\n",
-            progName);
+    fprintf(stderr, "usage: %s <size of the array> <server ip> <server port>\n", progName);
     exit(1);
-}
-
-static void sigtermHandler(int sig) {
-    close(serverFd);
-    exit(0);
 }
 
 int main(int argc, char *argv[]) {
@@ -64,7 +54,6 @@ int main(int argc, char *argv[]) {
     remove(fileName);
 
     serverFd = socket(AF_INET, SOCK_STREAM, 0);
-    signal(SIGTERM, sigtermHandler);
 
     if (bind(serverFd, (struct sockaddr *)&sock_var, sizeof(sock_var)) >= 0) {
         if (COM_IS_VERBOSE) printf("socket has been created\n");
@@ -79,6 +68,7 @@ int main(int argc, char *argv[]) {
 
             for (i = 0; i < COM_NUM_REQUEST; i++) {
                 pthread_join(t[i], &time);
+                /* Gets the performance measurement of the thread */
                 times[i] = *(double *)time;
                 free(time);
             }

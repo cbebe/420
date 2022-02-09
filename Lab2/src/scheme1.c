@@ -12,6 +12,7 @@
 #include "common.h"
 #include "operate.h"
 #include <pthread.h>
+#include <stdio.h>
 
 static pthread_mutex_t arrayLock = PTHREAD_MUTEX_INITIALIZER;
 
