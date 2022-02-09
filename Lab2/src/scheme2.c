@@ -12,6 +12,8 @@
 #include "common.h"
 #include "operate.h"
 #include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 static pthread_mutex_t *arrayLocks;
 static int arraySize;

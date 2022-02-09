@@ -54,5 +54,8 @@ Upon the end of the string array, the array of locks is destroyed and memory all
 
 Processing times of different data protection schemes averaged over 100 runs (in seconds)
 
-Our fastest access time was with scheme 4 N=1000 which was 1.379058e-04 seconds  
-A close second was scheme 2 N=1000 with 1.379330e-04 seconds
+Our fastest access time was using scheme 4 and _n_ = 1000 which was 1.379058e-04 seconds.
+
+The performance of scheme 1 and scheme 3 are not affected by the array size _n_ because these protect the whole array with a single lock or mutex. Scheme 3 is faster than scheme 1 because it allows multiple parallel readers, while scheme 1 locks the entire array regardless of whether it was a read or write operation.
+
+The performance of scheme 2 and scheme 4 on the other hand scale with the array size because there are separate locks and mutexes for each string. Scheme 4 does better than scheme 2 on _n_ = 10 because it better handles parallel readers (same as the difference between scheme 1 and scheme 3). This advantage becomes negligible as _n_ grows and resource contention decreases.

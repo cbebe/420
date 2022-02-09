@@ -2,7 +2,6 @@
 #define _LAB2_OPERATE_H_
 
 #include "common.h"
-#include <stdlib.h>
 
 /* Welcome to object-oriented programming in C */
 

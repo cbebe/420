@@ -1,15 +1,11 @@
 /**
- * @file common.c
+ * @file common.h
  * @brief Instructor-provided common functionality needed by the server
  *
  * The definitions are separated to avoid conflict from multiple includes
  */
 #ifndef _LAB2_COMMON_H_
 #define _LAB2_COMMON_H_
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 
 /*
 Important parameters
