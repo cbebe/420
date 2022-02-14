@@ -1,0 +1,19 @@
+main1: Single mutex protecting the entire array (Scheme 1)
+main2: Multiple mutexes protecting separate strings in the array (Scheme 2)
+main3: Single read-write lock protecting the entire array (Scheme 3)
+main4: Multiple read-write locks protecting separate strings in the array (Scheme 4)
+
+Notes:
+
+- The implementation of the functionality given in `common.h` has been
+  transferred to `common.c` to let us link the functions to the executables after
+  compilation. We would otherwise get duplicate definitions.
+
+- `saveTimes` has been modified to take in a filename so that we can save the
+  performance records of each server separately. The main executables pass in a
+  filename in this format:
+
+  `output-scheme<SCHEME_NUMBER>-<ARRAY_SIZE>`
+
+  The server also deletes this file if it exists on startup so previous tests
+  would not pollute the current test data.

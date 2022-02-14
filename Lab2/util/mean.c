@@ -1,6 +1,6 @@
 /**
  * @file mean.c
- * @author Charles Ancheta, Patricia Zafra, Michelle Lee
+ * @author Charles Ancheta, Patricia Zafra
  * @brief Reads a file of doubles line by line and outputs the mean
  * @version 0.1
  * @date 2022-02-02

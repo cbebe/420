@@ -1,6 +1,6 @@
 /**
  * @file operate.c
- * @author Charles Ancheta, Patricia Zafra, Michelle Lee
+ * @author Charles Ancheta, Patricia Zafra
  * @brief Provides an interface for the server to operate on the protected data structure
  * @version 0.1
  * @date 2022-02-02

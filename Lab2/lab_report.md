@@ -3,7 +3,7 @@ title: ECE 420 Lab 1 Report
 subtitle: Winter 2022
 fontsize: 12pt
 geometry: margin=0.75in
-author: Charles Ancheta, Michelle Lee, Patricia Zafra
+author: Charles Ancheta, Patricia Zafra
 ---
 
 # Description of Implementation

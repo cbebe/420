@@ -1,6 +1,6 @@
 /**
  * @file scheme4.c
- * @author Charles Ancheta, Patricia Zafra, Michelle Lee (you@domain.com)
+ * @author Charles Ancheta, Patricia Zafra
  * @brief Data Structure protection implementation 4
  * @version 0.1
  * @date 2022-01-31
