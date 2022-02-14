@@ -1,6 +1,6 @@
 /**
  * @file server.c
- * @author Charles Ancheta, Patricia Zafra, Michelle Lee
+ * @author Charles Ancheta, Patricia Zafra
  * @brief Functions containing the main server functionality
  * @version 0.1
  * @date 2022-02-03

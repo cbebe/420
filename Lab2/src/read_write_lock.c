@@ -1,6 +1,6 @@
 /**
  * @file read_write_lock.c
- * @author Charles Ancheta, Patricia Zafra, Michelle Lee
+ * @author Charles Ancheta, Patricia Zafra
  * @brief Read-write lock used for protecting the data structure
  * @version 0.1
  * @date 2022-02-05

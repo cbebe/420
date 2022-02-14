@@ -1,6 +1,6 @@
 /**
  * @file scheme3.c
- * @author Charles Ancheta, Patricia Zafra, Michelle Lee (you@domain.com)
+ * @author Charles Ancheta, Patricia Zafra (you@domain.com)
  * @brief Data Structure protection implementation 3
  * @version 0.1
  * @date 2022-01-31
