@@ -45,6 +45,9 @@ clean:
 deploy: clean
 	rsync -av . cloud:Lab2
 
+submit: clean
+	./scripts/submit.sh
+
 report: lab_report.pdf
 
 # Pandoc is pretty bloated, up to you guys if you wanna use it

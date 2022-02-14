@@ -30,7 +30,7 @@ get_student_id() {
 create_zip() {
 	dirs='Code Members Report'
 	mkdir -p $dirs
-	cp -r $code_files/ Code/
+	cp -r $code_files/* Code/
 	cp members.txt Members
 	cp $lab_report Report
 	zip -r ${student_id}.zip $dirs >/dev/null
