@@ -6,7 +6,7 @@ Compiling:
     "Lab3IO.c" should be included and "-lm" tag is needed, like
     > gcc serialtester.c Lab3IO.c -o serialtester -lm
 */
-#include "Lab3IO.h"
+#include "../src/Lab3IO.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
