@@ -6,5 +6,9 @@ all: main
 run: main
 	./main
 
-%: %.c Lab3IO.c
-	$(CC) $(CFLAGS) -fopenmp -o $@ $^
+%: src/%.c 
+	cd src && $(MAKE) $@ && cp $@ ..
+
+%: devkit/%.c
+	cd devkit && $(MAKE) $@ && cp $@ ..
+
