@@ -1,14 +1,13 @@
 CC ?= gcc
 CFLAGS := -Wall -Wpedantic -O3
 
-all: main
+test: test.sh datagen main serialtester
+	./$<
 
-run: main
-	./main
-
-%: src/%.c 
+%: src/%.c
 	cd src && $(MAKE) $@ && cp $@ ..
 
-%: devkit/%.c
-	cd devkit && $(MAKE) $@ && cp $@ ..
+%: util/%.c
+	cd util && $(MAKE) $@ && cp $@ ..
 
+.PHONY: test

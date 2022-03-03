@@ -38,7 +38,7 @@ and 100 in "./data_input"
 and 10 in "./data_input", and print the result on the screen.
 */
 
-#include "Lab3IO.h"
+#include "../src/Lab3IO.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
