@@ -10,6 +10,23 @@
         exit(1);                                                                                   \
     } while (0)
 
+/* WARNING: the code that follows will make you cry;
+ *          a safety pig is provided below for your benefit
+ *                           _
+ *   _._ _..._ .-',     _.._(`))
+ *  '-. `     '  /-._.-'    ',/
+ *     )         \            '.
+ *    / _    _    |             \
+ *   |  a    a    /              |
+ *   \   .-.                     ;
+ *    '-('' ).-'       ,'       ;
+ *       '-;           |      .'
+ *          \           \    /
+ *          | 7  .__  _.-\   \
+ *          | |  |  ``/  /`  /
+ *         /,_|  |   /,_/   /
+ *            /,_/      '`-'
+ */
 void solve(double **A, int size, double **ans) {
     double *X, temp;
     int i, j, k, *index;
