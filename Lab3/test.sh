@@ -1,6 +1,6 @@
 #!/bin/sh
 
-size=1000
+size=500
 num_threads=4
 
 RESTORE="\033[0m"

@@ -1,5 +1,6 @@
 CC ?= gcc
-CFLAGS := -Wall -Wpedantic -O3
+# Don't bug us about C90!!
+CFLAGS := -Wall -O3
 
 all: main
 

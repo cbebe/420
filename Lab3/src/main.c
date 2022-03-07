@@ -72,4 +72,6 @@ int main(int argc, const char **argv) {
     Lab3SaveOutput(X, size, end - start);
     DestroyVec(X);
     DestroyMat(A, size);
+
+    return 0;
 }
