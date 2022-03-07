@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-inline void usage(const char *prog_name) {
+void usage(const char *prog_name) {
     fprintf(stderr, "USAGE: %s <NUM_THREADS>\n", prog_name);
     exit(1);
 }
@@ -14,7 +14,7 @@ inline void usage(const char *prog_name) {
 double **A, *X;
 /* My compiler complains about redefining the built-in function index as a non-function so we had to
  * rename this */
-int *index_vec, size, num_threads;
+int *index_vec, size, thread_count;
 
 /* WARNING: the code that follows will make you cry;
  *          a safety pig is provided below for your benefit
@@ -37,30 +37,38 @@ double solve() {
     int i;
     double start, end;
 
-    GET_TIME(start);
-    /* Create answer vector and early return for basic case where size == 1 */
+    /* Initialize vectors */
     X = CreateVec(size);
+    index_vec = malloc(size * sizeof(*index_vec));
+    for (i = 0; i < size; ++i)
+        index_vec[i] = i;
+
+    /* Start timer */
+    GET_TIME(start);
+
+    /* Early return for basic case where size == 1 */
     if (size == 1) {
         X[0] = A[0][1] / A[0][0];
         GET_TIME(end);
         return end - start;
     }
 
-    /* Create index vector */
-    index_vec = malloc(size * sizeof(*index_vec));
-#pragma omp parallel for num_threads(num_threads)
-    for (i = 0; i < size; ++i)
-        index_vec[i] = i;
-
+    /* Ideally, we could put this in a parallel team too
+     * but idk how to get it to compute properly */
     gaussian();
     jordan();
 
-/* solution */
-#pragma omp parallel for num_threads(num_threads)
-    for (i = 0; i < size; ++i)
-        X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
+    /* clang-format off */
+    /* Launch parallel team */
+    #pragma omp parallel num_threads(thread_count) shared(A, index_vec)
+    {
+        /* Compute solution vector */
+        #pragma omp for
+        for (i = 0; i < size; ++i)
+            X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
+    }
+    /* clang-format on */
     GET_TIME(end);
-
     return end - start;
 }
 
@@ -68,8 +76,8 @@ int main(int argc, const char **argv) {
     double time;
 
     if (argc != 2) usage(argv[0]);
-    num_threads = atoi(argv[1]);
-    if (!num_threads) usage(argv[0]);
+    thread_count = atoi(argv[1]);
+    if (!thread_count) usage(argv[0]);
 
     Lab3LoadInput(&A, &size);
     time = solve();
