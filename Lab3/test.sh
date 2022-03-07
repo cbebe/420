@@ -1,6 +1,6 @@
 #!/bin/sh
 
-size=1000
+size=500
 num_threads=4
 
 RESTORE="\033[0m"
@@ -14,6 +14,6 @@ BLUE="\033[01;34m"
 	./datagen -s $size
 }
 printf "\n[${BLUE}MAIN${RESTORE}] Solving system of equations using $num_threads threads...\n"
-./main $num_threads
+./$1 $num_threads
 printf "\n[${YELLOW}SERIALTESTER${RESTORE}] Verifying solution...\n"
 ./serialtester
