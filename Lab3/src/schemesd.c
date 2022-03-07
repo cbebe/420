@@ -23,7 +23,7 @@ void gaussian() {
     double temp;
     int i, j, k;
 
-#pragma omp parallel for num_threads(thread_count) schedule(static, 1)
+#pragma omp parallel for num_threads(thread_count) schedule(static)
     for (k = 0; k < size - 1; ++k) {
         /* Pivoting */
         temp = 0;
