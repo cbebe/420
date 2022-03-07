@@ -1,7 +1,7 @@
 /**
- * @file schemess.c
+ * @file schemegs.c
  * @author Patricia Zafra, Charles Ancheta
- * @brief Static Gaussian and Static Jordan
+ * @brief Guided Gaussian and Static Jordan
  * @version 0.1
  * @date 2022-03-06
  *
@@ -23,7 +23,7 @@ void gaussian() {
     double temp;
     int i, j, k;
 
-#pragma omp parallel for schedule(static, 1)
+#pragma omp parallel for schedule(guided)
     for (k = 0; k < size - 1; ++k) {
         /* Pivoting */
         temp = 0;

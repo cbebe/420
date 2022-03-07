@@ -1,5 +1,5 @@
 /**
- * @file schemess.c
+ * @file schemedd.c
  * @author Patricia Zafra, Charles Ancheta
  * @brief Dynamic Gaussian and Dynamic Jordan
  * @version 0.1
@@ -17,20 +17,6 @@
         a = b;                                                                                     \
         b = temp;                                                                                  \
     } while (0)
-
-/* Jordan elimination */
-void jordan() {
-    double temp;
-    int i, k;
-#pragma omp parallel for schedule(dynamic)
-    for (k = size - 1; k > 0; --k) {
-        for (i = k - 1; i >= 0; --i) {
-            temp = A[index_vec[i]][k] / A[index_vec[k]][k];
-            A[index_vec[i]][k] -= temp * A[index_vec[k]][k];
-            A[index_vec[i]][size] -= temp * A[index_vec[k]][size];
-        }
-    }
-}
 
 /* Gaussian elimination */
 void gaussian() {
@@ -54,6 +40,20 @@ void gaussian() {
             temp = A[index_vec[i]][k] / A[index_vec[k]][k];
             for (j = k; j < size + 1; ++j)
                 A[index_vec[i]][j] -= A[index_vec[k]][j] * temp;
+        }
+    }
+}
+
+/* Jordan elimination */
+void jordan() {
+    double temp;
+    int i, k;
+#pragma omp parallel for schedule(dynamic)
+    for (k = size - 1; k > 0; --k) {
+        for (i = k - 1; i >= 0; --i) {
+            temp = A[index_vec[i]][k] / A[index_vec[k]][k];
+            A[index_vec[i]][k] -= temp * A[index_vec[k]][k];
+            A[index_vec[i]][size] -= temp * A[index_vec[k]][size];
         }
     }
 }
