@@ -18,7 +18,6 @@ int pivot(int k) {
     int col = k;
     int max = k;
 
-    #pragma omp for
     for (k = 0; k < size; k++) {
         if (fabs(A[index_vec[k]][col]) > A[index_vec[max]][col])
           max = k;
