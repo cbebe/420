@@ -23,11 +23,11 @@ void gaussian() {
     double temp;
     int i, j, k;
 
-#pragma omp parallel for num_threads(thread_count) schedule(dynamic)
     for (k = 0; k < size - 1; ++k) {
         /* Pivoting */
-        temp = 0;
-        for (i = k, j = 0; i < size; ++i)
+        temp = j = 0;
+#pragma omp parallel for num_threads(thread_count) schedule(dynamic)
+        for (i = k; i < size; ++i)
             if (temp < A[index_vec[i]][k] * A[index_vec[i]][k]) {
                 temp = A[index_vec[i]][k] * A[index_vec[i]][k];
                 j = i;
@@ -35,7 +35,8 @@ void gaussian() {
 
         if (j != k) SWAP(index_vec[j], index_vec[k]);
 
-        /* calculating */
+            /* calculating */
+#pragma omp parallel for num_threads(thread_count) schedule(dynamic)
         for (i = k + 1; i < size; ++i) {
             temp = A[index_vec[i]][k] / A[index_vec[k]][k];
             for (j = k; j < size + 1; ++j)
@@ -48,8 +49,8 @@ void gaussian() {
 void jordan() {
     double temp;
     int i, k;
-#pragma omp parallel for num_threads(thread_count) schedule(dynamic)
     for (k = size - 1; k > 0; --k) {
+#pragma omp parallel for num_threads(thread_count) schedule(dynamic)
         for (i = k - 1; i >= 0; --i) {
             temp = A[index_vec[i]][k] / A[index_vec[k]][k];
             A[index_vec[i]][k] -= temp * A[index_vec[k]][k];
