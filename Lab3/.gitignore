@@ -1,4 +1,6 @@
 main*
+test*
+!*.c
 serialtester
 datagen
 
@@ -6,3 +8,5 @@ data_input
 data_output
 
 .vscode
+
+times.tsv
