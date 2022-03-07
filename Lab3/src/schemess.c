@@ -1,5 +1,3 @@
-/* clang-format off */
-
 /**
  * @file schemess.c
  * @author Patricia Zafra, Charles Ancheta
@@ -23,6 +21,7 @@ void gaussian() {
     for (k = 0; k < size - 1; k++) {
         /* Pivoting */
         /* Use single thread when finding max and swapping */
+        /* clang-format off */
         #pragma omp single
         {
             max = pivot(k);
@@ -37,6 +36,7 @@ void gaussian() {
             for (j = k; j < size + 1; j++)
                 A[index_vec[i]][j] -= A[index_vec[k]][j] * temp;
         }
+        /* clang-format on */
     }
 }
 

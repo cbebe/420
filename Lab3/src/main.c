@@ -1,5 +1,3 @@
-/* clang-format off */
-
 #include "Lab3IO.h"
 #include "solver.h"
 #include "timer.h"
@@ -38,7 +36,7 @@ int *index_vec, size, thread_count;
 double solve() {
     int i;
     double start, end;
-    
+
     /* Initialize vectors */
     X = CreateVec(size);
     index_vec = malloc(size * sizeof(*index_vec));
@@ -55,10 +53,12 @@ double solve() {
         return end - start;
     }
 
-    /* Ideally, we could put this in a parallel team too but idk how to get it to compute properly */
+    /* Ideally, we could put this in a parallel team too
+     * but idk how to get it to compute properly */
     gaussian();
     jordan();
 
+    /* clang-format off */
     /* Launch parallel team */
     #pragma omp parallel num_threads(thread_count) shared(A, index_vec)
     {
@@ -67,6 +67,7 @@ double solve() {
         for (i = 0; i < size; ++i)
             X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
     }
+    /* clang-format on */
     GET_TIME(end);
     return end - start;
 }
