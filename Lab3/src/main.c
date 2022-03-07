@@ -1,3 +1,5 @@
+/* clang-format off */
+
 #include "Lab3IO.h"
 #include "solver.h"
 #include "timer.h"
@@ -36,31 +38,36 @@ int *index_vec, size, thread_count;
 double solve() {
     int i;
     double start, end;
-
-    GET_TIME(start);
-    /* Create answer vector and early return for basic case where size == 1 */
+    
+    /* Initialize vectors */
     X = CreateVec(size);
+    index_vec = malloc(size * sizeof(*index_vec));
+    for (i = 0; i < size; ++i)
+        index_vec[i] = i;
+
+    /* Start timer */
+    GET_TIME(start);
+
+    /* Early return for basic case where size == 1 */
     if (size == 1) {
         X[0] = A[0][1] / A[0][0];
         GET_TIME(end);
         return end - start;
     }
 
-    /* Create index vector */
-    index_vec = malloc(size * sizeof(*index_vec));
-#pragma omp parallel for num_threads(thread_count)
-    for (i = 0; i < size; ++i)
-        index_vec[i] = i;
-
+    /* Ideally, we could put this in a parallel team too but idk how to get it to compute properly */
     gaussian();
     jordan();
 
-/* solution */
-#pragma omp parallel for num_threads(thread_count)
-    for (i = 0; i < size; ++i)
-        X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
+    /* Launch parallel team */
+    #pragma omp parallel num_threads(thread_count) shared(A, index_vec)
+    {
+        /* Compute solution vector */
+        #pragma omp for
+        for (i = 0; i < size; ++i)
+            X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
+    }
     GET_TIME(end);
-
     return end - start;
 }
 
