@@ -4,7 +4,7 @@ CFLAGS := -Wall -Wpedantic -O3
 test: test.sh datagen main serialtester
 	./$<
 
-%: src/%.c
+main%: src/scheme%.c
 	cd src && $(MAKE) $@ && cp $@ ..
 
 %: util/%.c

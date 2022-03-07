@@ -1,10 +1,10 @@
 CC ?= gcc
 CFLAGS := -Wall -Wpedantic -O3
 
-all: main
+all: main1
 
-run: main
-	./main
+run: main1
+	./main1
 
-%: %.c Lab3IO.c
+main%: main.c Lab3IO.c scheme%.c
 	$(CC) $(CFLAGS) -fopenmp -o $@ $^
