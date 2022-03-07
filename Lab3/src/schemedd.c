@@ -1,7 +1,7 @@
 /**
- * @file scheme1.c
+ * @file schemess.c
  * @author Patricia Zafra, Charles Ancheta
- * @brief Serial implementation, no parallelization with OpenMP
+ * @brief Dynamic Gaussian and Dynamic Jordan
  * @version 0.1
  * @date 2022-03-06
  *
@@ -9,6 +9,7 @@
  *
  */
 #include "solver.h"
+#include <omp.h>
 
 #define SWAP(a, b)                                                                                 \
     do {                                                                                           \
@@ -21,6 +22,7 @@
 void jordan() {
     double temp;
     int i, k;
+#pragma omp parallel for schedule(dynamic)
     for (k = size - 1; k > 0; --k) {
         for (i = k - 1; i >= 0; --i) {
             temp = A[index_vec[i]][k] / A[index_vec[k]][k];
@@ -35,6 +37,7 @@ void gaussian() {
     double temp;
     int i, j, k;
 
+#pragma omp parallel for schedule(dynamic)
     for (k = 0; k < size - 1; ++k) {
         /* Pivoting */
         temp = 0;

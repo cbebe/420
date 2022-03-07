@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-inline void usage(const char *prog_name) {
+void usage(const char *prog_name) {
     fprintf(stderr, "USAGE: %s <NUM_THREADS>\n", prog_name);
     exit(1);
 }

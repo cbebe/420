@@ -7,7 +7,7 @@ all: main
 run: main
 	./main
 
-main: main.c Lab3IO.c scheme1.c
+main: main.c Lab3IO.c schemess.c
 	$(CC) $(CFLAGS) -fopenmp -o $@ $^
 
 main%: main.c Lab3IO.c scheme%.c
