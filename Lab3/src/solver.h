@@ -2,7 +2,7 @@
 #define _SRC_SOLVER_H_
 
 extern double **A;
-extern int *index_vec, size, num_threads;
+extern int *index_vec, size, thread_count;
 
 /**
  * @brief Perform Jordan elimination on the A matrix

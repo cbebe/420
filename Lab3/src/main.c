@@ -14,7 +14,7 @@ void usage(const char *prog_name) {
 double **A, *X;
 /* My compiler complains about redefining the built-in function index as a non-function so we had to
  * rename this */
-int *index_vec, size, num_threads;
+int *index_vec, size, thread_count;
 
 /* WARNING: the code that follows will make you cry;
  *          a safety pig is provided below for your benefit
@@ -48,7 +48,7 @@ double solve() {
 
     /* Create index vector */
     index_vec = malloc(size * sizeof(*index_vec));
-#pragma omp parallel for num_threads(num_threads)
+#pragma omp parallel for num_threads(thread_count)
     for (i = 0; i < size; ++i)
         index_vec[i] = i;
 
@@ -56,7 +56,7 @@ double solve() {
     jordan();
 
 /* solution */
-#pragma omp parallel for num_threads(num_threads)
+#pragma omp parallel for num_threads(thread_count)
     for (i = 0; i < size; ++i)
         X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
     GET_TIME(end);
@@ -68,8 +68,8 @@ int main(int argc, const char **argv) {
     double time;
 
     if (argc != 2) usage(argv[0]);
-    num_threads = atoi(argv[1]);
-    if (!num_threads) usage(argv[0]);
+    thread_count = atoi(argv[1]);
+    if (!thread_count) usage(argv[0]);
 
     Lab3LoadInput(&A, &size);
     time = solve();

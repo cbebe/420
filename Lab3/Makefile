@@ -1,7 +1,7 @@
 CC ?= gcc
 CFLAGS := -Wall -Wpedantic -O3
 
-EXE ?= main1
+EXE ?= mainss
 
 test: test.sh datagen $(EXE) serialtester
 	./$< $(EXE)
