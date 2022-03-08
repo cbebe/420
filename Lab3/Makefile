@@ -3,14 +3,14 @@ CFLAGS := -Wall -Wpedantic -O3
 
 EXE ?= mainss
 
-test: test.sh datagen $(EXE) serialtester
+test: single-test.sh datagen $(EXE) serialtester
 	./$< $(EXE)
 
 main: src/main.c
 	cd src && $(MAKE) $@ && cp $@ ..
 
-main%: src/scheme%.c
-	cd src && $(MAKE) $@ && cp $@ ..
+main%: src/main.c src/Lab3IO.c bench/scheme%.c
+	$(CC) $(CFLAGS) -fopenmp -o $@ $^
 
 test%: bench/scheme%.c
 	cd bench && $(MAKE) $@ && cp $@ ..
