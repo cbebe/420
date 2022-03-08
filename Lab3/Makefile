@@ -12,12 +12,16 @@ main: src/main.c
 main%: src/scheme%.c
 	cd src && $(MAKE) $@ && cp $@ ..
 
+test%: bench/scheme%.c
+	cd bench && $(MAKE) $@ && cp $@ ..
+
 %: util/%.c
 	cd util && $(MAKE) $@ && cp $@ ..
 
 clean:
-	rm -f data_output datagen main* serialtester
+	rm -f data_output datagen main* test* times.tsv serialtester
 	cd src && $(MAKE) $@
+	cd bench && $(MAKE) $@
 	cd util && $(MAKE) $@
 
 # Used for deploying code to our VM
