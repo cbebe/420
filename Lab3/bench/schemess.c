@@ -18,10 +18,10 @@ void gaussian() {
     int i, j, k;
     int max = 0;
 
+    /* clang-format off */
     for (k = 0; k < size - 1; k++) {
         /* Pivoting */
         /* Use single thread when finding max and swapping */
-        /* clang-format off */
         #pragma omp single
         {
             max = pivot(k);
@@ -36,20 +36,22 @@ void gaussian() {
             for (j = k; j < size + 1; j++)
                 A[index_vec[i]][j] -= A[index_vec[k]][j] * temp;
         }
-        /* clang-format on */
     }
+    /* clang-format on */
 }
 
 /* Jordan elimination */
 void jordan() {
     int i, k;
 
+    /* clang-format off */
     for (k = size - 1; k > 0; k--) {
-#pragma omp parallel for num_threads(thread_count) schedule(static)
+        #pragma omp parallel for num_threads(thread_count) schedule(static)
         for (i = k - 1; i >= 0; i--) {
             A[index_vec[i]][size] -=
                 A[index_vec[i]][k] / A[index_vec[k]][k] * A[index_vec[k]][size];
             A[index_vec[i]][k] = 0;
         }
     }
+    /* clang-format on */
 }

@@ -56,9 +56,9 @@ double solve() {
     /* Ideally, we could put this in a parallel team too
      * but idk how to get it to compute properly */
     gaussian();
+    /* clang-format off */
     jordan();
 
-    /* clang-format off */
     /* Launch parallel team */
     #pragma omp parallel num_threads(thread_count) shared(A, index_vec)
     {

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 size=500
-num_threads=4
+num_threads=${2:-4}
 
 RESTORE="\033[0m"
 RED="\033[01;31m"

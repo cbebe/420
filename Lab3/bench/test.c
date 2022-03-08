@@ -95,11 +95,13 @@ int main(int argc, const char **argv) {
     Lab3LoadInput(&A, &size);
     for (i = 0; i < NUM_TESTS; ++i) {
         avg_time += solve();
-        DestroyVec(X);
+        // Don't destroy the last vector
+        if (i != NUM_TESTS - 1) DestroyVec(X);
     }
     avg_time /= NUM_TESTS;
     printf("Average time taken: %e seconds\n", avg_time);
     Lab3SaveOutput(X, size, avg_time);
+    DestroyVec(X);
     DestroyMat(A, size);
 
     return 0;
