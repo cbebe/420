@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS := -Wall -Wpedantic -O3
+CFLAGS := -Wall -Wpedantic -Wextra -O3
 
 EXE ?= mainss
 
@@ -9,11 +9,16 @@ test: single-test.sh datagen $(EXE) serialtester
 main: src/main.c
 	cd src && $(MAKE) $@ && cp $@ ..
 
-main%: src/main.c src/Lab3IO.c bench/scheme%.c
+main%: src/main.c src/Lab3IO.c bench/scheme%.c src/util.h
 	$(CC) $(CFLAGS) -fopenmp -o $@ $^
 
 test%: bench/scheme%.c
 	cd bench && $(MAKE) $@ && cp $@ ..
+
+report: lab_report.pdf
+
+%.pdf: %.md
+	pandoc $< -o $@
 
 %: util/%.c
 	cd util && $(MAKE) $@ && cp $@ ..
@@ -29,4 +34,4 @@ clean:
 deploy: clean
 	rsync -av . cloud:Lab3
 
-.PHONY: test clean
+.PHONY: test clean report deploy

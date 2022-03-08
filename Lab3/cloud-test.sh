@@ -1,7 +1,9 @@
 #!/bin/sh
 
-RESTORE="\033[0m"
-PURPLE="\033[01;35m"
+[ -t 1 ] && {
+    RESTORE="\033[0m"
+    PURPLE="\033[01;35m"
+}
 
 exe=${EXE:-main1}
 
