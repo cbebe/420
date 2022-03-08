@@ -19,12 +19,15 @@ done
 
 printf "*** Testing all schemes with $threads threads... ***\n"
 
+make serialtester
+
 for i in $schemes
 do
     scheme=$(get_scheme $i)
     exe=test${scheme}
     printf "Testing $exe... "
     ./$exe $threads
+    ./serialtester
     printf "$scheme\t$(tail -n1 data_output)\n" >>$output
 done
 
