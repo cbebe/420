@@ -45,7 +45,7 @@ void jordan() {
     int i, k;
 
     for (k = size - 1; k > 0; k--) {
-#pragma omp parallel for num_threads(thread_count) schedule(static)
+        #pragma omp parallel for num_threads(thread_count) schedule(static)
         for (i = k - 1; i >= 0; i--) {
             A[index_vec[i]][size] -=
                 A[index_vec[i]][k] / A[index_vec[k]][k] * A[index_vec[k]][size];
