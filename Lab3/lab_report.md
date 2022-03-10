@@ -10,7 +10,7 @@ author: Charles Ancheta, Patricia Zafra
 
 Our implementation does not differ much from the given serial example aside from OpenMP directives, which is the goal of using OpenMP. For the Gaussian elimination, we were able to parallelize the elimination steps. However, each row still had to be done serially. We also tried parallelizing the pivoting step but the overhead of dividing the work between threads made it perform worse even at size 100.
 
-For the Jordan elimination step, we parallelized the variable elimination for each row. This step isn't as expensive as the Gaussian elimination step ($n^2$ time vs Gaussian's $n^3$ time) so we did not make further steps in parallelizing it.
+For the Jordan elimination step, we parallelized the variable elimination for each row. This step isn't as expensive as the Gaussian elimination step ($n^2$ time vs Gaussian's $n^3$ time) so we did not take further steps in parallelizing it.
 
 ### Methods of Parallelization
 
