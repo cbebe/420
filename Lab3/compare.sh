@@ -1,9 +1,16 @@
 #!/bin/sh
 
-
 threads=4
+size=1000
 output=times.tsv
 schemes=$(cd bench && ls scheme*)
+
+# Create data_input if not present
+[ -f data_input ] || {
+    printf "*** Generating input data of size $size... ***\n"
+    make datagen
+    ./datagen -s $size
+}
 
 get_scheme() {
     echo $1 | sed -E 's/scheme([^.]+).c/\1/'
