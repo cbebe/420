@@ -24,7 +24,7 @@ report: lab_report.pdf
 	cd util && $(MAKE) $@ && cp $@ ..
 
 clean:
-	rm -f data_output datagen main* test* times.tsv serialtester
+	rm -f data_output datagen main* test* times.tsv serialtester speedup
 	cd src && $(MAKE) $@
 	cd bench && $(MAKE) $@
 	cd util && $(MAKE) $@

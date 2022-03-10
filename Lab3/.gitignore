@@ -10,5 +10,7 @@ data_output
 .vscode
 
 times.tsv
+latest_times.tsv
+speedup
 
 lab_report.pdf
