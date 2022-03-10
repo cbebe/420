@@ -1,5 +1,3 @@
-/* clang-format off */
-
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
@@ -19,17 +17,16 @@ int pivot(int k) {
     int max = k;
 
     for (k = 0; k < size; k++) {
-        if (fabs(A[index_vec[k]][col]) > A[index_vec[max]][col])
-          max = k;
+        if (fabs(A[index_vec[k]][col]) > A[index_vec[max]][col]) max = k;
     }
     return max;
 }
 
 /**
  * @brief Swap two indicies
- * 
- * @param index_1 
- * @param index_2 
+ *
+ * @param index_1
+ * @param index_2
  */
 void swap(int index_1, int index_2) {
     int temp = index_1;

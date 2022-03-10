@@ -30,7 +30,7 @@ void gaussian() {
 
         /* Elimination */
         /* Parallelize elimination steps */
-        #pragma omp parallel for num_threads(thread_count) schedule(dynamic)
+        #pragma omp for schedule(dynamic)
         for (i = k + 1; i < size; i++) {
             temp = A[index_vec[i]][k] / A[index_vec[k]][k];
             for (j = k; j < size + 1; j++)
@@ -46,7 +46,7 @@ void jordan() {
 
     /* clang-format off */
     for (k = size - 1; k > 0; k--) {
-        #pragma omp parallel for num_threads(thread_count) schedule(guided)
+        #pragma omp for schedule(guided)
         for (i = k - 1; i >= 0; i--) {
             A[index_vec[i]][size] -=
                 A[index_vec[i]][k] / A[index_vec[k]][k] * A[index_vec[k]][size];

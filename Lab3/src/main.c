@@ -53,15 +53,12 @@ double solve() {
         return end - start;
     }
 
-    /* Ideally, we could put this in a parallel team too
-     * but idk how to get it to compute properly */
-    gaussian();
     /* clang-format off */
-    jordan();
-
-    /* Launch parallel team */
     #pragma omp parallel num_threads(thread_count) shared(A, index_vec)
     {
+        /* Parallelize the algorithms using the same parallel team */
+        gaussian();
+        jordan();
         /* Compute solution vector */
         #pragma omp for
         for (i = 0; i < size; ++i)
