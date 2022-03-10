@@ -27,7 +27,7 @@ For example, `schemeds.c` executes the Gaussian elimination algorithm using dyna
 
 Using data of size 1000, by testing different combinations of scheduling policies on different numbers of threads, we were able to find that using a scheduling policy of `static` for Gaussian elimination and `static` for Jordan elimination running on 4 threads gave us the fastest run time.
 
-Below is a table showing the runtimes of various schemes running with different numbers of threads. Some schemes are omitted in the table as the results are similar to other schemes:
+Below is a table showing the runtimes of various schemes running with different numbers of threads. Some schemes are omitted from the table as the results were similar to other schemes:
 
 | # of Threads | Baseline (Serial) | Dynamic Gaussian/Guided Jordan | Static Gaussian/Dynamic Jordan | Static Gaussian/Static Jordan |
 | ------------ | ----------------- | ------------------------------ | ------------------------------ | ----------------------------- |
