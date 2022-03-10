@@ -1,12 +1,37 @@
+/**
+ * @file speedup.c
+ * @author Patricia Zafra, Charles Ancheta
+ * @brief Measures the speedup between each parallel implementation
+ * @version 0.1
+ * @date 2022-03-10
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
+#define BUF_LEN 16
+
+inline const char *get_sched(char s) {
+    switch (s) {
+    case 's':
+        return "Static";
+    case 'd':
+        return "Dynamic";
+    case 'g':
+        return "Guided";
+    default:
+        return "Unknown";
+    }
+}
+
 int main() {
     FILE *times;
-    const int len = 16;
-    char buffer[len], *time_str, *name;
-    double baseline, time;
+    const int len = BUF_LEN;
+    char buffer[BUF_LEN], *time_str, *name, max_name[3] = {0, 0, 0};
+    double baseline, time, speedup, max = 1;
     times = fopen("latest_times.tsv", "r");
     if (times == NULL) {
         perror("Error opening times file");
@@ -18,10 +43,21 @@ int main() {
         name = strtok(buffer, "\t");
         time_str = strtok(NULL, "\t");
         if (strncmp(name, "00", 2) == 0) {
-            sscanf(time_str, "%f\n", &baseline);
+            sscanf(time_str, "%lf\n", &baseline);
             printf("Baseline: %f seconds\n", baseline);
         } else {
-            printf("%s: %fx speedup\n", name, baseline / time);
+            sscanf(time_str, "%lf\n", &time);
+            speedup = baseline / time;
+            printf("%s: %.2fx speedup (%f seconds)\n", name, speedup, time);
+            if (speedup > max) {
+                max = speedup;
+                strncpy(max_name, name, 2);
+            }
         }
     }
+
+    printf("Max speedup: %s Gaussian and %s Jordan\n", get_sched(max_name[0]),
+           get_sched(max_name[1]));
+
+    return 0;
 }

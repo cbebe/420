@@ -1,8 +1,10 @@
-%: %.c ../src/Lab3IO.c
-	$(CC) $^ -o $@ -lm
+CFLAGS := -Wall -Wpedantic -O3
 
-%: %.c
-	$(CC) $^ -o $@
+%: %.c ../src/Lab3IO.c
+	$(CC) $(CFLAGS) $^ -o $@ -lm
+
+speedup: speedup.c
+	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
 	rm -f datagen serialtester speedup
