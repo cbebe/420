@@ -11,6 +11,9 @@ num_threads=${2:-4}
 	BLUE="\033[01;34m"
 }
 
+rm $1
+make $1 serialtester
+
 [ -f "data_input" ] || {
 	printf "[${GREEN}DATAGEN${RESTORE}] Generating data with matrix of size $size...\n"
 	./datagen -s $size

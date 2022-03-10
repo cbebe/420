@@ -3,6 +3,7 @@
 threads=4
 size=1000
 output=times.tsv
+latest_output=latest_times.tsv
 schemes=$(cd bench && ls scheme*)
 
 # Create data_input if not present
@@ -39,3 +40,7 @@ do
 done
 
 printf "\n" >>$output
+
+tail -n 11 $output > $latest_output
+make speedup
+./speedup

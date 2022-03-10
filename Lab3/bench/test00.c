@@ -1,3 +1,13 @@
+/**
+ * @file test00.c
+ * @author Charles Ancheta, Patricia Zafra
+ * @brief Tests the solving multiple times to remove cache biases
+ * @version 0.1
+ * @date 2022-03-07
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #include "Lab3IO.h"
 #include "solver.h"
 #include "timer.h"
@@ -5,6 +15,8 @@
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#define NUM_TESTS 5
 
 void usage(const char *prog_name) {
     fprintf(stderr, "USAGE: %s <NUM_THREADS>\n", prog_name);
@@ -51,35 +63,38 @@ double solve() {
         X[0] = A[0][1] / A[0][0];
         GET_TIME(end);
         return end - start;
-        /* clang-format off */
     }
 
-    #pragma omp parallel num_threads(thread_count) shared(A, index_vec)
-    {
-        /* Parallelize the algorithms using the same parallel team */
-        gaussian();
-        jordan();
-        /* Compute solution vector */
-        #pragma omp for
-        for (i = 0; i < size; ++i)
-            X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
-    }
+    /* Parallelize the algorithms using the same parallel team */
+    gaussian();
+    /* clang-format off */
+    jordan();
+    /* Compute solution vector */
+    #pragma omp for
+    for (i = 0; i < size; ++i)
+        X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
     /* clang-format on */
     GET_TIME(end);
     return end - start;
 }
 
 int main(int argc, const char **argv) {
-    double time;
+    int i;
+    double avg_time = 0;
 
     if (argc != 2) usage(argv[0]);
     thread_count = atoi(argv[1]);
     if (!thread_count) usage(argv[0]);
 
     Lab3LoadInput(&A, &size);
-    time = solve();
-    printf("Time taken: %e seconds\n", time);
-    Lab3SaveOutput(X, size, time);
+    for (i = 0; i < NUM_TESTS; ++i) {
+        avg_time += solve();
+        // Don't destroy the last vector
+        if (i != NUM_TESTS - 1) DestroyVec(X);
+    }
+    avg_time /= NUM_TESTS;
+    printf("Average time taken: %e seconds\n", avg_time);
+    Lab3SaveOutput(X, size, avg_time);
     DestroyVec(X);
     DestroyMat(A, size);
 

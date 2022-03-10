@@ -63,17 +63,14 @@ double solve() {
         X[0] = A[0][1] / A[0][0];
         GET_TIME(end);
         return end - start;
+        /* clang-format off */
     }
 
-    /* Ideally, we could put this in a parallel team too
-     * but idk how to get it to compute properly */
-    gaussian();
-    jordan();
-
-    /* clang-format off */
-    /* Launch parallel team */
     #pragma omp parallel num_threads(thread_count) shared(A, index_vec)
     {
+        /* Parallelize the algorithms using the same parallel team */
+        gaussian();
+        jordan();
         /* Compute solution vector */
         #pragma omp for
         for (i = 0; i < size; ++i)
