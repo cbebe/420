@@ -12,6 +12,25 @@
 #include "util.h"
 #include <omp.h>
 
+int max = 0;
+
+#define IDX_MAT(row, col) (A[index_vec[row]][col])
+#define MAX_IDX(a, b, col) fabs(IDX_MAT(a, col)) > IDX_MAT(b, col)
+
+void find_max(int k) {
+    int local_max = k;
+    int col = k;
+    int id = omp_get_thread_num();
+    int local_size = size / thread_count;
+
+    for (k = local_size * id; k < (local_size + 1) * id; k++) {
+        if (MAX_IDX(k, local_max, col)) local_max = k;
+    }
+
+#pragma omp critical
+    if (MAX_IDX(local_max, max, col)) max = local_max;
+}
+
 /* Gaussian elimination */
 void gaussian() {
     double temp;
@@ -24,7 +43,11 @@ void gaussian() {
         /* Use single thread when finding max and swapping */
         #pragma omp single
         {
-            max = pivot(k);
+            max = k;
+        }
+        find_max(k);
+        #pragma omp single
+        {
             swap(index_vec[k], index_vec[max]);
         }
 

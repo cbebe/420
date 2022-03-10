@@ -51,9 +51,9 @@ double solve() {
         X[0] = A[0][1] / A[0][0];
         GET_TIME(end);
         return end - start;
+        /* clang-format off */
     }
 
-    /* clang-format off */
     #pragma omp parallel num_threads(thread_count) shared(A, index_vec)
     {
         /* Parallelize the algorithms using the same parallel team */
