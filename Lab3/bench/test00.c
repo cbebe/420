@@ -1,5 +1,5 @@
 /**
- * @file test.c
+ * @file test00.c
  * @author Charles Ancheta, Patricia Zafra
  * @brief Tests the solving multiple times to remove cache biases
  * @version 0.1
@@ -63,19 +63,16 @@ double solve() {
         X[0] = A[0][1] / A[0][0];
         GET_TIME(end);
         return end - start;
-        /* clang-format off */
     }
 
-    #pragma omp parallel num_threads(thread_count) shared(A, index_vec)
-    {
-        /* Parallelize the algorithms using the same parallel team */
-        gaussian();
-        jordan();
-        /* Compute solution vector */
-        #pragma omp for
-        for (i = 0; i < size; ++i)
-            X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
-    }
+    /* Parallelize the algorithms using the same parallel team */
+    gaussian();
+    /* clang-format off */
+    jordan();
+    /* Compute solution vector */
+    #pragma omp for
+    for (i = 0; i < size; ++i)
+        X[i] = A[index_vec[i]][size] / A[index_vec[i]][i];
     /* clang-format on */
     GET_TIME(end);
     return end - start;
