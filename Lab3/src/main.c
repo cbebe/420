@@ -1,3 +1,16 @@
+/**
+ * @file main.c
+ * @author Patricia Zafra, Charles Ancheta
+ * @brief Main executable for Lab 3
+ * @version 0.1
+ * @date 2022-03-10
+ *
+ * Computes the solution for a system of equations
+ * using Gaussian and Jordan elimination
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #include "Lab3IO.h"
 #include "solver.h"
 #include "timer.h"

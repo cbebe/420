@@ -1,3 +1,13 @@
+/**
+ * @file solver.h
+ * @author Patricia Zafra, Charles Ancheta
+ * @brief Functions for eliminating variables in the A matrix
+ * @version 0.1
+ * @date 2022-03-10
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #ifndef _SRC_SOLVER_H_
 #define _SRC_SOLVER_H_
 
