@@ -20,6 +20,9 @@ test%: bench/scheme%.c
 
 report: lab_report.pdf
 
+submit: clean
+	./submit.sh
+
 %.pdf: %.md
 	pandoc $< -o $@
 
@@ -40,4 +43,4 @@ data_clean:
 deploy: clean
 	rsync -av . cloud:Lab3
 
-.PHONY: test clean report deploy
+.PHONY: test clean report deploy submit

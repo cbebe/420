@@ -2,5 +2,8 @@
 
 [ "$1" = "" ] && printf "USAGE: $0 <BEST_SCHEME_SOURCE>\n" && exit 1
 
-# Remove symlink and replace with an actual file
-rm -f src/scheme.c && cp $1 src/scheme.c
+file=$(realpath $1)
+
+# It's okay to keep the symlink 
+# because zip will grab the referenced file before archiving
+rm -f src/scheme.c && cd src && ln -sr $file scheme.c && cd ..
