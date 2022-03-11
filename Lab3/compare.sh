@@ -5,7 +5,7 @@ output=times.tsv
 latest_output=latest_times.tsv
 schemes=$(cd bench && ls scheme*)
 rows=0
-thread_cases="1 2 3 4 5"
+thread_cases="1 4 8"
 
 make clean
 
