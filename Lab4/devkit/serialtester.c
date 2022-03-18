@@ -17,7 +17,8 @@
 */
 #define LAB4_EXTEND
 
-#include "Lab4_IO.h"
+#include "../src/Lab4_IO.h"
+#include "../src/timer.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,6 +39,7 @@ int main(int argc, char *argv[]) {
     double *collected_r;
     double cst_addapted_threshold;
     double error;
+    double start, end;
     FILE *fp, *ip;
 
     // Load the data and simple verification
@@ -75,7 +77,7 @@ int main(int argc, char *argv[]) {
         contribution[i] = r[i] / nodehead[i].num_out_links * DAMPING_FACTOR;
     damp_const = (1.0 - DAMPING_FACTOR) / nodecount;
     // CORE CALCULATION
-    // GET_TIME(start);
+    GET_TIME(start);
     do {
         ++iterationcount;
         vec_cp(r, r_pre, nodecount);
@@ -91,9 +93,9 @@ int main(int argc, char *argv[]) {
             contribution[i] = r[i] / nodehead[i].num_out_links * DAMPING_FACTOR;
         }
     } while (rel_error(r, r_pre, nodecount) >= EPSILON);
-    // GET_TIME(end);
-    // printf("Program converged at %d th iteration.\nElapsed time %f.\n",
-    // iterationcount, end-start);
+    GET_TIME(end);
+    printf("Program converged at %d th iteration.\nElapsed time %f.\n", iterationcount,
+           end - start);
 
     // post processing
     node_destroy(nodehead, nodecount);

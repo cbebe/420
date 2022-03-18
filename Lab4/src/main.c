@@ -11,19 +11,16 @@
 #define LAB4_EXTEND
 #include "Lab4_IO.h"
 
+#include "page_rank.h"
+#include "timer.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define DAMPING_FACTOR 0.85
-#define EPSILON 1E-5
-
-#define GET_TIME(now)                                                                              \
-    {                                                                                              \
-        struct timeval t;                                                                          \
-        gettimeofday(&t, NULL);                                                                    \
-        now = t.tv_sec + t.tv_usec / 1000000.0;                                                    \
-    }
+int num_nodes, num_iterations;
+double *R;
+struct node *nodes;
 
 /**
  * @brief Get the number of nodes
@@ -37,22 +34,25 @@ int get_num_nodes() {
 }
 
 int main() {
-    int num_nodes, i;
-    struct node *nodes;
-    double start, end, *R;
-    num_nodes = get_num_nodes();
-    node_init(&nodes, 0, num_nodes);
+    double start, end, total;
 
-    R = malloc(num_nodes * sizeof *R);
-    for (i = 0; i < num_nodes; i++)
-        R[i] = 0;
+    num_nodes = get_num_nodes();
+    GET_TIME(start);
+    if (node_init(&nodes, 0, num_nodes)) return 254;
+    GET_TIME(end);
+    printf("Loading graph took %f seconds...\n", end - start);
+    init_r();
 
     GET_TIME(start);
 
     // Do something with nodes here
+    page_rank();
 
     GET_TIME(end);
+    total = end - start;
     node_destroy(nodes, num_nodes);
-    Lab4_saveoutput(R, num_nodes, end - start);
+    printf("Elapsed time: %f, number of iterations: %d\n", total, num_iterations);
+    Lab4_saveoutput(R, num_nodes, total);
+    free(R);
     return 0;
 }
