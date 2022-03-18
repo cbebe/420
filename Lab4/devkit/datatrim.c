@@ -17,18 +17,19 @@ Synopsis:
 
 -----
 Options:
-    -b    specify the upper bound index to be included in the original data (default 5300,
-generating data with 1112 nodes) -i    specify the input path (default "./web-Stanford.txt") -o
-specify the output path prefix (default "./data_input") -n    tag to shut down the auto link
-addition for the nodes that have no out going links
+    -b  specify the upper bound index to be included in the original data (default 5300,
+generating data with 1112 nodes)
+    -i  specify the input path (default "./web-Stanford.txt")
+    -o  specify the output path prefix (default "./data_input")
+    -n  tag to shut down the auto link addition for the nodes that have no out going links
 
 -----
 Outputs:
     Output files:
     data_input_link:    the directed links with the first number as the index of the source node and
-the second number as the index of the destination node. data_input_meta:    first line indicating
-the number of the nodes, the following lines indicating the node index, number of incoming links,
-number of outgoing links.
+the second number as the index of the destination node.
+    data_input_meta:    first line indicating the number of the nodes, the following lines
+indicating the node index, number of incoming links, number of outgoing links.
 
 -----
 Error returns:
@@ -38,21 +39,21 @@ Error returns:
 
 -----
 Example:
-    >datatrim
+    > datatrim
     fetch the graph from the original, add links for the nodes with no out going links and store the
 result in "./data_input",
 
-    >datagen -b 10000 -n
+    > datagen -b 10000 -n
     fetch the graph with index less than 10000 and store it in "data_input"
 
 Source data is from:
 http://snap.stanford.edu/data/web-Stanford.html
 */
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 int main(int argc, char *argv[]) {
     int option;

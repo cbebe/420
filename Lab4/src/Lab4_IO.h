@@ -15,7 +15,8 @@ int Lab4_saveoutput(double *R, int nodecount, double Time);
 #ifdef LAB4_EXTEND
 // the relative between vec r and vec t with respect to t, i.e., it returns norm(r-t)/norm(t)
 double rel_error(double *r, double *t, int size);
-int vec_cp(double *r, double *t, int size); // cp r to t
+// cp r to t
+int vec_cp(double *r, double *t, int size);
 
 // Structure to store the node info
 struct node {
@@ -23,9 +24,8 @@ struct node {
     int num_in_links;
     int num_out_links;
 };
-int node_init(struct node **nodehead, int start,
-              int end); // Load the input data for index within a range.
-                        // Including the start but not including the end!
+// Load the input data for index within a range. Including the start but not including the end!
+int node_init(struct node **nodehead, int start, int end);
 int node_destroy(struct node *nodehead, int num_nodes);
 #endif // LAB4_EXTEND
 #endif // LAB4_H_INCLUDE
