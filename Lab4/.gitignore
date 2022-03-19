@@ -1,10 +1,18 @@
+# Executables
 serialtester
+average
 datatrim
 main
 
+# PageRank Data
+data_input*_link
+data_input*_meta
+data_output
+
+# Experiment results
+results*.txt
+average*.txt
+
+# Report
 *.zip
 lab_report.pdf
-
-data_input_link
-data_input_meta
-data_output
