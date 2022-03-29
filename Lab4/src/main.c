@@ -14,6 +14,7 @@
 #include "page_rank.h"
 #include "timer.h"
 
+#include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -35,6 +36,12 @@ int get_num_nodes() {
 
 int main() {
     double start, end, total;
+    int comm_sz, my_rank;
+
+    /* Initialize MPI */
+    MPI_Init(NULL, NULL);
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 
     num_nodes = get_num_nodes();
     GET_TIME(start);
@@ -49,10 +56,14 @@ int main() {
     page_rank();
 
     GET_TIME(end);
+
+    MPI_Finalize();
+
     total = end - start;
     node_destroy(nodes, num_nodes);
     printf("Elapsed time: %f, number of iterations: %d\n", total, num_iterations);
     Lab4_saveoutput(R, num_nodes, total);
     free(R);
+
     return 0;
 }
