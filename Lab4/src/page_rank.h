@@ -30,6 +30,6 @@ void init_r();
  *   R - vector of final probabilities
  *   num_iterations - number of iterations before converging
  */
-void page_rank();
+void page_rank(int chunksize);
 
 #endif
