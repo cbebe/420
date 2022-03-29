@@ -36,31 +36,25 @@ int get_num_nodes() {
 
 int main() {
     double start, end, total;
-    int chunksize, lower, upper;
-    int comm_sz, my_rank;
+    int chunksize, comm_sz, my_rank;
 
     /* Initialize MPI */
     MPI_Init(NULL, NULL);
     MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 
-    /* Divide the work and get upper and lower bounds */
-    chunksize = num_nodes / comm_sz;
-    if (comm_sz * chunksize != num_nodes) chunksize += 1; /* Account for non-divisible case */
-    lower = my_rank * chunksize;
-    upper = lower + chunksize;
-
     num_nodes = get_num_nodes();
+    chunksize = num_nodes / comm_sz;
 
     GET_TIME(start);
-    if (node_init(&nodes, lower, upper)) return 254;
+    if (node_init(&nodes, 0, num_nodes)) return 254;
     GET_TIME(end);
     printf("Loading graph took %f seconds...\n", end - start);
 
     init_r();
 
     GET_TIME(start);
-    page_rank(chunksize);
+    page_rank(chunksize, my_rank);
     GET_TIME(end);
 
     MPI_Finalize();
