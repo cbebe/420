@@ -29,6 +29,10 @@ struct node *nodes;
 int get_num_nodes() {
     int num_nodes;
     FILE *fp = fopen("data_input_meta", "r");
+    if (fp == NULL) {
+        fprintf(stderr, "Error opening file\n");
+        exit(1);
+    }
     fscanf(fp, "%d\n", &num_nodes);
     fclose(fp);
     return num_nodes;

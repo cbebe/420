@@ -34,5 +34,3 @@ do
     ./serialtester
     cat $out_file | ./average >>"average$node.txt"
 done
-
-rm -f data_input_meta data_input_link
