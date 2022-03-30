@@ -17,7 +17,8 @@ print_speedup() {
     printf    "+-------+--------+----------+---------+\n"
     for node in $nodes
     do
-        ./speedup $node $(tail -n1 average$node-serial.txt) $(tail -n1 average$node.txt)
+        num_nodes=$(head -n1 data_input${node}_meta)
+        ./speedup $num_nodes $(tail -n1 average$node-serial.txt) $(tail -n1 average$node.txt)
     done
     printf -- '+-------+--------+----------+---------+\n'
 }
