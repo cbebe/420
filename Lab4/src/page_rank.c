@@ -20,10 +20,13 @@ void init_r() {
 void page_rank(int chunksize, int my_rank) {
     int i, j, start, end;
     double *new_R, *contribution, *new_R_l, damp_const;
+
     num_iterations = 0;
+
     INIT_VEC(new_R_l, chunksize);
     INIT_VEC(new_R, num_nodes);
     INIT_VEC(contribution, num_nodes);
+
     start = chunksize * my_rank;
     end = start + chunksize;
 

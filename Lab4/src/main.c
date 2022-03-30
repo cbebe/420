@@ -50,8 +50,8 @@ int main() {
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 
     chunksize = num_nodes / comm_sz;
-
-    // TODO: check if product of chunksize & comm_sz is equal to num_nodes
+    /* If not fully divisible, increase the chunksize */
+    if (comm_sz * chunksize != num_nodes) chunksize += 1;
 
     GET_TIME(start);
     if (node_init(&nodes, 0, num_nodes)) return 254;
@@ -66,6 +66,7 @@ int main() {
 
     MPI_Finalize();
 
+    /* Cleanup */
     if (my_rank == 0) {
         total = end - start;
         node_destroy(nodes, chunksize);
