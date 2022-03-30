@@ -1,9 +1,12 @@
 #!/bin/sh
 
 npes=${npes:-2}
+cluster_hostname=cluster-111.novalocal
 
-# nodes="5300 13000 18789"
-nodes="5300 7000 10000"
+nodes=${nodes:-"5300 13000 18789"}
+# nodes="5300 7000 10000"
+
+[ "$(hostname)" = $cluster_hostname ] && hosts="-f /home/$USER/hosts"
 
 RESTORE="\033[0m"
 RED="\033[01;31m"
@@ -23,13 +26,29 @@ print_speedup() {
     printf -- '+-------+--------+----------+---------+\n'
 }
 
+link_new() {
+    node=$1
+
+    rm -f data_input_meta data_input_link
+    ln -s data_input${node}_meta data_input_meta
+    ln -s data_input${node}_link data_input_link
+
+    # Copy symlinks to cluster
+    [ "$do_cluster" != "" ] && {
+        for host in $(cat $hosts_file)
+        do
+            [ "$host" != "$my_ip" ] && rsync -av . ${host}:Lab4
+        done
+    }
+}
+
 [ "$1" = "print" ] && print_speedup && exit 0
 
 num_tests=10
 
 set -e
 
-make datatrim main serialtester serial average
+make datatrim main serialtester serial average speedup
 
 # Generate files if they don't exist
 printf "Generating files...\n"
@@ -45,14 +64,12 @@ for node in $nodes
 do
     out_file="results$node.txt"
     baseline_file="baseline$node.txt"
-    rm -f data_input_meta data_input_link
-    ln -s data_input${node}_meta data_input_meta
-    ln -s data_input${node}_link data_input_link
+    link_new $node
 
     for i in $(seq 1 $num_tests)
     do
         printf "${GREEN}**** $node nodes -- $i of $num_tests ****\n${RESTORE}"
-        mpiexec -np $npes ./main
+        mpiexec $hosts -np $npes ./main
         awk -F: 'NR==2 {print $1; exit}' data_output >>$out_file
         ./serial
         awk -F: 'NR==2 {print $1; exit}' data_output >>$baseline_file
