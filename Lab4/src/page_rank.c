@@ -28,7 +28,7 @@ void page_rank(int chunksize, int my_rank) {
 
     INIT_VEC(new_R_l, chunksize);
     INIT_VEC(new_R, num_nodes + num_pad);
-    INIT_VEC(contribution, num_nodes + num_pad);
+    INIT_VEC(contribution, num_nodes);
 
     start = chunksize * my_rank;
     end = start + chunksize;
