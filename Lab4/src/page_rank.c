@@ -16,33 +16,33 @@ void init_r() {
 
 void page_rank(int chunksize, int my_rank) {
     int i, j, start, end;
-    double *new_R, *contribution, damp_const;
+    double *new_R, *contribution, *new_R_l, damp_const;
     num_iterations = 0;
+    INIT_VEC(new_R_l, chunksize);
     INIT_VEC(new_R, num_nodes);
     INIT_VEC(contribution, num_nodes);
     start = chunksize * my_rank;
     end = start + chunksize;
 
-    for (i = start; i < end; i++)
+    for (i = 0; i < num_nodes; i++)
         contribution[i] = R[i] / nodes[i].num_out_links * DAMPING_FACTOR;
 
     damp_const = (1.0 - DAMPING_FACTOR) / num_nodes;
 
     while (1) {
         num_iterations++;
-        for (i = start; i < end; ++i) {
-            new_R[i] = 0;
+        for (i = start; i < end; i++) {
+            new_R_l[i] = 0;
             for (j = 0; j < nodes[i].num_in_links; ++j)
-                new_R[i] += contribution[nodes[i].inlinks[j]];
-            new_R[i] += damp_const;
+                new_R_l[i] += contribution[nodes[i].inlinks[j]];
+            new_R_l[i] += damp_const;
         }
 
-        MPI_Allgather(new_R + start, chunksize, MPI_DOUBLE, new_R, chunksize, MPI_DOUBLE,
-                      MPI_COMM_WORLD);
+        MPI_Allgather(new_R_l, chunksize, MPI_DOUBLE, new_R, chunksize, MPI_DOUBLE, MPI_COMM_WORLD);
 
         if (rel_error(new_R, R, num_nodes) < EPSILON) break;
 
-        for (i = 0; i < num_nodes; ++i) {
+        for (i = 0; i < num_nodes; i++) {
             contribution[i] = new_R[i] / nodes[i].num_out_links * DAMPING_FACTOR;
         }
 
