@@ -1,7 +1,7 @@
-EXE := main datatrim serialtester average
+EXE := main datatrim serialtester average serial speedup
 REPORT := lab_report.pdf
 
-run: main serialtester datatrim average test.sh
+run: main serialtester datatrim average serial speedup test.sh
 	./test.sh
 
 %: devkit/%.c
@@ -23,7 +23,10 @@ clean:
 	cd devkit && $(MAKE) $@
 	cd src && $(MAKE) $@
 
+deploy: clean
+	rsync -av . cloud:Lab4
+
 clean_data: clean
-	rm -f results*.txt data_input* data_output average*.txt
+	rm -f results*.txt data_input* data_output average*.txt baseline*.txt
 
 .PHONY: run clean submit report

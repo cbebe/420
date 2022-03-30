@@ -14,6 +14,7 @@
 #include "page_rank.h"
 #include "timer.h"
 
+#include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -28,6 +29,10 @@ struct node *nodes;
 int get_num_nodes() {
     int num_nodes;
     FILE *fp = fopen("data_input_meta", "r");
+    if (fp == NULL) {
+        fprintf(stderr, "Error opening file\n");
+        exit(1);
+    }
     fscanf(fp, "%d\n", &num_nodes);
     fclose(fp);
     return num_nodes;
@@ -35,24 +40,40 @@ int get_num_nodes() {
 
 int main() {
     double start, end, total;
+    int chunksize, comm_sz, my_rank;
 
     num_nodes = get_num_nodes();
+
+    /* Initialize MPI */
+    MPI_Init(NULL, NULL);
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+
+    chunksize = num_nodes / comm_sz;
+    /* If not fully divisible, increase the chunksize */
+    if (comm_sz * chunksize != num_nodes) chunksize += 1;
+
     GET_TIME(start);
     if (node_init(&nodes, 0, num_nodes)) return 254;
     GET_TIME(end);
     printf("Loading graph took %f seconds...\n", end - start);
+
     init_r();
 
     GET_TIME(start);
-
-    // Do something with nodes here
-    page_rank();
-
+    page_rank(chunksize, my_rank);
     GET_TIME(end);
-    total = end - start;
-    node_destroy(nodes, num_nodes);
-    printf("Elapsed time: %f, number of iterations: %d\n", total, num_iterations);
-    Lab4_saveoutput(R, num_nodes, total);
-    free(R);
+
+    MPI_Finalize();
+
+    /* Cleanup */
+    if (my_rank == 0) {
+        total = end - start;
+        node_destroy(nodes, chunksize);
+        printf("Elapsed time: %f, number of iterations: %d\n", total, num_iterations);
+        Lab4_saveoutput(R, num_nodes, total);
+        free(R);
+    }
+
     return 0;
 }

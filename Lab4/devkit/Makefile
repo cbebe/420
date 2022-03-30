@@ -1,12 +1,10 @@
 CFLAGS := -O3
+LDFLAGS := -lm
 
-serialtester: serialtester.c ../src/Lab4_IO.c
-	gcc $(CFLAGS) $^ -o $@ -lm
-
-%: %.c
-	gcc $(CFLAGS) $^ -o $@
+%: %.c ../src/Lab4_IO.c
+	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 clean:
-	rm -f datatrim serialtester average
+	rm -f datatrim serialtester average serial speedup
 
 .PHONY: clean

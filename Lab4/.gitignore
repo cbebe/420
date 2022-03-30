@@ -1,8 +1,10 @@
 # Executables
 serialtester
+speedup
 average
 datatrim
 main
+serial
 
 # PageRank Data
 data_input*_link
@@ -12,6 +14,7 @@ data_output
 # Experiment results
 results*.txt
 average*.txt
+baseline*.txt
 
 # Report
 *.zip
