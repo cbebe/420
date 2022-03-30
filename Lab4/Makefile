@@ -1,4 +1,4 @@
-EXE := main datatrim serialtester average
+EXE := main datatrim serialtester average serial
 REPORT := lab_report.pdf
 
 run: main serialtester datatrim average test.sh
@@ -27,6 +27,6 @@ deploy: clean
 	rsync -av . cloud:Lab4
 
 clean_data: clean
-	rm -f results*.txt data_input* data_output average*.txt
+	rm -f results*.txt data_input* data_output average*.txt baseline*.txt
 
 .PHONY: run clean submit report

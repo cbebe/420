@@ -5,6 +5,6 @@ LDFLAGS := -lm
 	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 clean:
-	rm -f datatrim serialtester average
+	rm -f datatrim serialtester average serial
 
 .PHONY: clean

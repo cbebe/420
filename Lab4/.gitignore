@@ -13,6 +13,7 @@ data_output
 # Experiment results
 results*.txt
 average*.txt
+baseline*.txt
 
 # Report
 *.zip
