@@ -30,7 +30,7 @@ do
     ln -s data_input${node}_link data_input_link
     for i in $(seq 1 10)
     do
-        mpiexec -np $npes --mca opal_warn_on_missing_libcuda 0 ./main
+        mpiexec -np $npes ./main
         awk -F: 'NR==2 {print $1; exit}' data_output >>$out_file
     done
     ./serialtester

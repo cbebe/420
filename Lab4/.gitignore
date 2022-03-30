@@ -3,6 +3,7 @@ serialtester
 average
 datatrim
 main
+serial
 
 # PageRank Data
 data_input*_link

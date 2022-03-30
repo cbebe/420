@@ -23,6 +23,9 @@ clean:
 	cd devkit && $(MAKE) $@
 	cd src && $(MAKE) $@
 
+deploy: clean
+	rsync -av . cloud:Lab4
+
 clean_data: clean
 	rm -f results*.txt data_input* data_output average*.txt
 
