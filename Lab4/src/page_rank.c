@@ -8,13 +8,16 @@
 
 #define MAX_ITERATIONS 100
 
-#define INIT_VEC(vec, size) vec = malloc(size * sizeof *vec);
+#define INIT_VEC(vec, size) vec = malloc((size) * sizeof *vec);
 
 void init_r() {
     int i;
-    INIT_VEC(R, num_nodes);
+    INIT_VEC(R, num_nodes + num_pad);
     for (i = 0; i < num_nodes; i++)
         R[i] = 1 / num_nodes;
+    // Initialize padding
+    for (i = num_nodes; i < num_nodes + num_pad; i++)
+        R[i] = 0;
 }
 
 void page_rank(int chunksize, int my_rank) {
@@ -24,7 +27,7 @@ void page_rank(int chunksize, int my_rank) {
     num_iterations = 0;
 
     INIT_VEC(new_R_l, chunksize);
-    INIT_VEC(new_R, num_nodes);
+    INIT_VEC(new_R, num_nodes + num_pad);
     INIT_VEC(contribution, num_nodes);
 
     start = chunksize * my_rank;
@@ -39,6 +42,7 @@ void page_rank(int chunksize, int my_rank) {
         num_iterations++;
         for (i = start; i < end; i++) {
             new_R_l[i - start] = 0;
+            if (i >= num_nodes) continue; // Padding zero
             for (j = 0; j < nodes[i].num_in_links; j++)
                 new_R_l[i - start] += contribution[nodes[i].inlinks[j]];
             new_R_l[i - start] += damp_const;

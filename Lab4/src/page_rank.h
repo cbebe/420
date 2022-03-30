@@ -4,7 +4,7 @@
 #define LAB4_EXTEND
 #include "Lab4_IO.h"
 
-extern int num_nodes, num_iterations;
+extern int num_nodes, num_iterations, num_pad;
 extern struct node *nodes;
 extern double *R;
 
