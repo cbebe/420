@@ -1,7 +1,7 @@
-EXE := main datatrim serialtester average serial
+EXE := main datatrim serialtester average serial speedup
 REPORT := lab_report.pdf
 
-run: main serialtester datatrim average test.sh
+run: main serialtester datatrim average serial speedup test.sh
 	./test.sh
 
 %: devkit/%.c
