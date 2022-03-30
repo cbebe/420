@@ -33,8 +33,8 @@ link_new() {
     ln -s data_input${node}_meta data_input_meta
     ln -s data_input${node}_link data_input_link
 
-    # Copy symlinks to cluster
     [ "$do_cluster" != "" ] && {
+        printf "${RED}Copying symlinks to cluster...${RESTORE}\n"
         for host in $(cat $hosts_file)
         do
             [ "$host" != "$my_ip" ] && rsync -av . ${host}:Lab4
@@ -65,10 +65,11 @@ do
     out_file="results$node.txt"
     baseline_file="baseline$node.txt"
     link_new $node
+    num_nodes=$(head -n1 data_input${node}_meta)
 
     for i in $(seq 1 $num_tests)
     do
-        printf "${GREEN}**** $node nodes -- $i of $num_tests ****\n${RESTORE}"
+        printf "${GREEN}**** $num_nodes nodes -- $i of $num_tests ****\n${RESTORE}"
         mpiexec $hosts -np $npes ./main
         awk -F: 'NR==2 {print $1; exit}' data_output >>$out_file
         ./serial
