@@ -36,13 +36,16 @@ void page_rank(int chunksize, int my_rank) {
                 new_R[i] += contribution[nodes[i].inlinks[j]];
             new_R[i] += damp_const;
         }
-        for (i = start; i < end; ++i) {
-            contribution[i] = new_R[i] / nodes[i].num_out_links * DAMPING_FACTOR;
-        }
 
         MPI_Allgather(new_R + start, chunksize, MPI_DOUBLE, new_R, chunksize, MPI_DOUBLE,
                       MPI_COMM_WORLD);
+
         if (rel_error(new_R, R, num_nodes) < EPSILON) break;
+
+        for (i = 0; i < num_nodes; ++i) {
+            contribution[i] = new_R[i] / nodes[i].num_out_links * DAMPING_FACTOR;
+        }
+
         vec_cp(new_R, R, chunksize);
     }
 }

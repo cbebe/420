@@ -42,12 +42,13 @@ int main() {
     double start, end, total;
     int chunksize, comm_sz, my_rank;
 
+    num_nodes = get_num_nodes();
+
     /* Initialize MPI */
     MPI_Init(NULL, NULL);
     MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 
-    num_nodes = get_num_nodes();
     chunksize = num_nodes / comm_sz;
 
     // TODO: check if product of chunksize & comm_sz is equal to num_nodes
