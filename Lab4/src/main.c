@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-int num_nodes, num_iterations;
+int num_nodes, num_iterations, num_pad = 0;
 double *R;
 struct node *nodes;
 
@@ -40,7 +40,7 @@ int get_num_nodes() {
 
 int main() {
     double start, end, total;
-    int chunksize, comm_sz, my_rank;
+    int chunksize, comm_sz, my_rank, remainder;
 
     num_nodes = get_num_nodes();
 
@@ -49,9 +49,9 @@ int main() {
     MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 
-    chunksize = num_nodes / comm_sz;
-    /* If not fully divisible, increase the chunksize */
-    if (comm_sz * chunksize != num_nodes) chunksize += 1;
+    remainder = num_nodes % comm_sz;
+    if (remainder != 0) num_pad = comm_sz - remainder;
+    chunksize = (num_nodes + num_pad) / comm_sz;
 
     GET_TIME(start);
     if (node_init(&nodes, 0, num_nodes)) return 254;
