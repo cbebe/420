@@ -1,5 +1,7 @@
 #!/bin/sh
 
+npes=${npes:-2}
+
 nodes="5300 13000 18789"
 
 RESTORE="\033[0m"
@@ -28,7 +30,7 @@ do
     ln -s data_input${node}_link data_input_link
     for i in $(seq 1 10)
     do
-        ./main
+        mpiexec -np $npes --mca opal_warn_on_missing_libcuda 0 ./main
         awk -F: 'NR==2 {print $1; exit}' data_output >>$out_file
     done
     ./serialtester

@@ -15,12 +15,12 @@ void init_r() {
 }
 
 void page_rank(int chunksize, int my_rank) {
-    int i, j, start, end, done = 0;
+    int i, j, start, end;
     double *new_R, *contribution, damp_const;
     num_iterations = 0;
     INIT_VEC(new_R, num_nodes);
-    INIT_VEC(contribution, chunksize);
-    start = my_rank / num_nodes;
+    INIT_VEC(contribution, num_nodes);
+    start = chunksize * my_rank;
     end = start + chunksize;
 
     for (i = start; i < end; i++)
@@ -28,7 +28,7 @@ void page_rank(int chunksize, int my_rank) {
 
     damp_const = (1.0 - DAMPING_FACTOR) / num_nodes;
 
-    while (!done) {
+    while (1) {
         num_iterations++;
         for (i = start; i < end; ++i) {
             new_R[i] = 0;
@@ -40,9 +40,9 @@ void page_rank(int chunksize, int my_rank) {
             contribution[i] = new_R[i] / nodes[i].num_out_links * DAMPING_FACTOR;
         }
 
-        MPI_Allgather(contribution + start, chunksize, MPI_DOUBLE, R + start, chunksize, MPI_DOUBLE,
+        MPI_Allgather(new_R + start, chunksize, MPI_DOUBLE, new_R, chunksize, MPI_DOUBLE,
                       MPI_COMM_WORLD);
-        if (rel_error(new_R, R, num_nodes) < EPSILON) done = 1;
+        if (rel_error(new_R, R, num_nodes) < EPSILON) break;
         vec_cp(new_R, R, chunksize);
     }
 }

@@ -50,6 +50,8 @@ int main() {
     num_nodes = get_num_nodes();
     chunksize = num_nodes / comm_sz;
 
+    // TODO: check if product of chunksize & comm_sz is equal to num_nodes
+
     GET_TIME(start);
     if (node_init(&nodes, 0, num_nodes)) return 254;
     GET_TIME(end);
