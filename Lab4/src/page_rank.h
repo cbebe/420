@@ -22,6 +22,9 @@ void init_r();
 /**
  * @brief Executes the PageRank algorithm on `nodes`
  *
+ * @param chunksize
+ * @param my_rank
+ *
  * Global inputs:
  *   nodes - vector of nodes
  *   num_nodes - total number of nodes
