@@ -1,4 +1,31 @@
 #!/bin/sh
+# Do all experiments with all configurations
+# (number of processes, single vs. multiple machines)
+# This takes a long time to run, make sure to play a sound when it's done or something
 
-# Use no-color because it will be in a file
-gcc -O3 -DNO_COLOR devkit/speedup.c -o speedup -lm
+output_file=${1:-experiment$(date +%s).txt}
+
+run_experiment() {
+    for i in  $(seq 1 4)
+    do
+        # Skip single process on cluster experiment
+        [ "$1" != "" ] && [ "$i" = "1" ] && continue
+        npes=$i do_cluster=$1 ./cloud-test.sh || {
+            printf "Experiment #$i failed\n" | tee -a $output_file
+            continue
+        }
+        printf "No. of processes: $i\n" | tee -a $output_file
+        rm speedup
+        # Use NO_COLOR because it will be piped into a file
+        gcc -O3 -DNO_COLOR devkit/speedup.c -o speedup -lm
+        ./test.sh print >>$output_file
+    done
+    
+}
+
+date >>$output_file
+printf "*** Single Machine ***\n" | tee -a $output_file
+run_experiment
+
+printf "*** Multiple Machines ***\n" | tee -a $output_file
+run_experiment 1

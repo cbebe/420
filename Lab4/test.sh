@@ -4,9 +4,10 @@ npes=${npes:-2}
 cluster_hostname=cluster-111.novalocal
 
 nodes=${nodes:-"5300 13000 18789"}
-# nodes="5300 7000 10000"
 
-[ "$(hostname)" = $cluster_hostname ] && hosts="-f /home/$USER/hosts"
+[ "$(hostname)" = $cluster_hostname ] && [ "$do_cluster" != "" ] && {
+    hosts="-f /home/$USER/hosts"
+}
 
 RESTORE="\033[0m"
 RED="\033[01;31m"
@@ -28,11 +29,9 @@ print_speedup() {
 
 link_new() {
     node=$1
-
     rm -f data_input_meta data_input_link
     ln -s data_input${node}_meta data_input_meta
     ln -s data_input${node}_link data_input_link
-
     [ "$do_cluster" = "" ] || {
         printf "${RED}Copying symlinks to cluster...${RESTORE}\n"
         for host in $(cat $hosts_file)
@@ -51,7 +50,7 @@ set -e
 make datatrim main serialtester serial average speedup
 
 # Generate files if they don't exist
-printf "Generating files...\n"
+printf "${BLUE}Generating files...${RESTORE}\n"
 for node in $nodes
 do
     file="data_input$node"
@@ -66,7 +65,6 @@ do
     baseline_file="baseline$node.txt"
     link_new $node
     num_nodes=$(head -n1 data_input${node}_meta)
-
     for i in $(seq 1 $num_tests)
     do
         printf "${GREEN}**** $num_nodes nodes -- $i of $num_tests ****\n${RESTORE}"
