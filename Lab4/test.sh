@@ -67,7 +67,7 @@ do
     num_nodes=$(head -n1 data_input${node}_meta)
     for i in $(seq 1 $num_tests)
     do
-        printf "${GREEN}**** $num_nodes nodes -- $i of $num_tests ****\n${RESTORE}"
+        printf "${GREEN}**** $extra_message# of processes: $npes $num_nodes nodes -- $i of $num_tests ****\n${RESTORE}"
         mpiexec $hosts -np $npes ./main
         awk -F: 'NR==2 {print $1; exit}' data_output >>$out_file
         ./serial

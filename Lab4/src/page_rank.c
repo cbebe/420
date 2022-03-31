@@ -20,7 +20,7 @@ void init_r() {
     for (i = 0; i < num_nodes; i++)
         R[i] = 1 / num_nodes;
 #ifndef NO_PAD
-    // Initialize padding
+    /* Initialize padding */
     for (i = num_nodes; i < num_nodes + num_pad; i++)
         R[i] = 0;
 #endif
@@ -52,7 +52,9 @@ void page_rank(int chunksize, int my_rank) {
         num_iterations++;
         for (i = start; i < end; i++) {
             new_R_l[i - start] = 0;
-            if (i >= num_nodes) continue; // Padding zero
+#ifndef NO_PAD
+            if (i >= num_nodes) continue; /* Padding zero */
+#endif
             for (j = 0; j < nodes[i].num_in_links; j++)
                 new_R_l[i - start] += contribution[nodes[i].inlinks[j]];
             new_R_l[i - start] += damp_const;
