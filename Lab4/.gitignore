@@ -15,6 +15,7 @@ data_output
 results*.txt
 average*.txt
 baseline*.txt
+experiment*.txt
 
 # Report
 *.zip
