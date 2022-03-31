@@ -1,9 +1,9 @@
 #!/bin/sh
 
 hosts_file="/home/$USER/hosts"
-# nodes="5300 13000 18789"
-nodes="5000 7000 10000"
-do_cluster=true
+nodes="5300 13000 18789"
+# nodes="5000 7000 10000"
+# do_cluster=true
 
 make clean main datatrim
 

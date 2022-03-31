@@ -33,7 +33,7 @@ link_new() {
     ln -s data_input${node}_meta data_input_meta
     ln -s data_input${node}_link data_input_link
 
-    [ "$do_cluster" != "" ] && {
+    [ "$do_cluster" = "" ] || {
         printf "${RED}Copying symlinks to cluster...${RESTORE}\n"
         for host in $(cat $hosts_file)
         do
