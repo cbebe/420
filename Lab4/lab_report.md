@@ -6,9 +6,21 @@ geometry: margin=0.75in
 author: Charles Ancheta, Patricia Zafra
 ---
 
-# Implementation
+# Description of Implementation
 
-# Experimental Observations
+# Performance Discussion
+
+### Questions
+
+1.  Is the performance of your program better on a single machine setup or on a multiple machines setup? What is the reason?
+
+    The program runs better on multiple machines. This is likely due to a better distributed workload amongst the machines. On a single machine, the performance of the program will decrease as the number of processes is increased, due to the context switching between processes. When running a relatively large program on multiple machines, the workload is much more balanced and is thus more performant.
+
+2.  What is the best number of processes that should be used in your program, respective to the different problem sizes? How does the granularity affect the running time of your program and why?
+
+3.  How did you partition your data? How did you partition the graph among the processes?
+
+4.  What communication mechanisms are used in your program? What is the advantage of your specific choices in terms of communication overhead and running time?
 
 Nodes ( Single / Multiple )
 
