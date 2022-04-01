@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# USAGE: ./do-all-gnome.sh [OUTPUT_FILE] [DO_NO_PAD]
+# USAGE: ./do-all-gnome.sh [OUTPUT_FILE]
 
 # https://superuser.com/questions/598783/play-sound-on-mac-terminal
 done_beep() {

@@ -12,18 +12,12 @@
 
 void init_r() {
     int i;
-#ifndef NO_PAD
     INIT_VEC(R, num_nodes + num_pad);
-#else
-    INIT_VEC(R, num_nodes);
-#endif
     for (i = 0; i < num_nodes; i++)
         R[i] = 1 / num_nodes;
-#ifndef NO_PAD
     /* Initialize padding */
     for (i = num_nodes; i < num_nodes + num_pad; i++)
         R[i] = 0;
-#endif
 }
 
 void page_rank(int chunksize, int my_rank) {
@@ -33,11 +27,7 @@ void page_rank(int chunksize, int my_rank) {
     num_iterations = 0;
 
     INIT_VEC(new_R_l, chunksize);
-#ifndef NO_PAD
     INIT_VEC(new_R, num_nodes + num_pad);
-#else
-    INIT_VEC(new_R, num_nodes);
-#endif
     INIT_VEC(contribution, num_nodes);
 
     start = chunksize * my_rank;
@@ -52,9 +42,9 @@ void page_rank(int chunksize, int my_rank) {
         num_iterations++;
         for (i = start; i < end; i++) {
             new_R_l[i - start] = 0;
-#ifndef NO_PAD
+
             if (i >= num_nodes) continue; /* Padding zero */
-#endif
+
             for (j = 0; j < nodes[i].num_in_links; j++)
                 new_R_l[i - start] += contribution[nodes[i].inlinks[j]];
             new_R_l[i - start] += damp_const;
