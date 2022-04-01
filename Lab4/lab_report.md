@@ -8,6 +8,21 @@ author: Charles Ancheta, Patricia Zafra
 
 # Description of Implementation
 
+In this lab, we were tasked with implementing a distributed version of the PageRank algorithm using MPI. An iterative approach was used to calculate the probabilities and stop once the algorithm reaches the following condition:
+$$\frac{||\vec{r}(t+1) - \vec{r}(t)||}{||\vec{r}(t)||} < 1 \times 10^{-5}$$
+Using the iterative approach, we were able to parallelize the PageRank algorithm to distribute the workload amongst several machines and nodes to achieve optimal performance.
+
+In order to distribute the tasks, we first initialized variables that are local to each process. These variables include the original vector of probabilities, a vector that stores the contribution of each process to the calculation, and start and end indices for each process. The division of work is done by calculating a chunk size using:
+$$chunk size = \frac{N_{nodes} + N_{padding zeros}}{N_{processes}}$$
+
+Note that we added padding zeros to the vector in the case where the number of nodes is not perfectly divisible by the number of processes.
+
+Each process will do a _chunksize_ amount of work and its start and end indices are calculated using their rank as follows:
+$$start = chunksize \times rank_{process}$$
+$$end = chunksize \times ({rank_{process} + 1})$$
+
+After dividing the work between processes, each process does its contribution of the calculation as described by Equations (1) and (3) provided in the lab manual.
+
 # Performance Discussion
 
 ### Questions
