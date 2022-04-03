@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# USAGE: ./do-all-gnome.sh [OUTPUT_FILE] [DO_NO_PAD]
+# USAGE: ./do-all-gnome.sh [OUTPUT_FILE]
 
 done_beep() {
     paplay /usr/share/sounds/gnome/default/alerts/bark.ogg

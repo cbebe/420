@@ -12,8 +12,6 @@ run_experiment() {
     do
         # Skip single process on cluster experiment
         [ "$2" != "" ] && [ "$i" = "1" ] && continue
-        # Skip uneven distribution on no-pad
-        [ "$3" != "" ] && [ "$i" = "3" ] && continue
         extra_message=$1 npes=$i do_cluster=$1 ./cloud-test.sh $2 || {
             printf "Experiment #$i with $1 failed\n" | tee -a $output_file
             continue
@@ -28,17 +26,8 @@ run_experiment() {
 }
 
 date >>$output_file
-printf "* With padding *\n" | tee -a $output_file
-printf "*** Single Machine ***\n" | tee -a $output_file
+printf "### Single Machine\n" | tee -a $output_file
 run_experiment "With padding, Single Machine "
 
-printf "*** Multiple Machines ***\n" | tee -a $output_file
+printf "### Multiple Machines\n" | tee -a $output_file
 run_experiment "With padding, Multiple Machines " 1
-
-[ "$2" = "" ] || {
-    printf "* Without padding *\n" | tee -a $output_file
-    printf "*** Single Machine ***\n" | tee -a $output_file
-    run_experiment  "Without padding, Single Machine " "" no-pad
-    printf "*** Multiple Machines ***\n" | tee -a $output_file
-    run_experiment "Without padding, Multiple Machines " 1 no-pad
-}
