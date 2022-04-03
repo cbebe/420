@@ -29,21 +29,13 @@ After dividing the work between processes, each process does its contribution of
 
 ### Questions
 
-1.  Is the performance of your program better on a single machine setup or on a multiple machines setup? What is the reason?
+1.  For small problem sizes, the single machine setup will perform better than a multiple machine setup where there would be additional communication overhead. However as the problem size increases, the program will begin to benefit from having the work be distributed amongst machines, and the communication overhead will be less of an issue. Also, as the number of processes on a single machine increases, the efficiency of the program significantly decreases due to overhead from coordination between processes. We didn't really see this issue in our program, but given that we only ran up to 4 processes, this wasn't really much of an issue. This is also less of an issue with multiple machines, where the performance varies depending on the problem size along with the number of machines running. Therefore, a large problem (>1112 nodes) running on many processes would perform better on a multiple machine setup.
 
-    For small problem sizes, the single machine setup will perform better than a multiple machine setup where there would be additional communication overhead. However as the problem size increases, the program will begin to benefit from having the work be distributed amongst machines, and the communication overhead will be less of an issue. Also, as the number of processes on a single machine increases, the efficiency of the program significantly decreases due to overhead from coordination between processes. This is less of an issue with multiple machines, where the performance could vary depending on the problem size and number of machines running. Therefore, a large problem (>1112 nodes) would perform better on a multiple machine setup.
+2.  The best number of processes to be used with our program is 4 on all problem sizes. This might not be the case for problem sizes smaller than 1112 nodes where the communication overhead overtakes the computational load. This makes our program have coarse granularity, where each process does a relatively large chunk of work. Increasing the number of processes beyond 4 could slow down our problem where we could have greater communication overhead or excess idle time of processes.
 
-2.  What is the best number of processes that should be used in your program, respective to the different problem sizes? How does the granularity affect the running time of your program and why?
+3.  Since our graph is represented by a vector whose elements may or may not refer to other elements in the vector, we did not have to do any matrix partitioning. We simply divided the data linearly into $p$ parts and distributed them among the $p$ processes.
 
-    The best number of processes to be used with our program is 4 on all problem sizes. This might not be the case for problem sizes smaller than 1112 nodes where the communication overhead overtakes the computational load.
-
-3.  How did you partition your data? How did you partition the graph among the processes?
-
-    Since our graph is represented by a vector whose elements may or may not refer to other elements in the vector, we did not have to do any matrix partitioning. We simply divided the data linearly into $p$ parts and distributed them among the $p$ processes.
-
-4.  What communication mechanisms are used in your program? What is the advantage of your specific choices in terms of communication overhead and running time?
-
-    We used `MPI_Allgather` to collect the entire vector after every iteration since it's required to compute the relative error. We could have used something like `MPI_Reduce` in the special case the graph is partitioned into "islands" that do not connect to other partitions in the graph to remove the communication overhead of sharing the whole array between the processes. However, that might not work for a graph that is a single island. The advantage of the communication mechanism that we used is that it handles all cases and shapes of the graph.
+4.  We used `MPI_Allgather` to collect the entire vector after every iteration since it's required to compute the relative error. We could have used something like `MPI_Reduce` in the special case the graph is partitioned into "islands" that do not connect to other partitions in the graph to remove the communication overhead of sharing the whole array between the processes. However, that might not work for a graph that is a single island. The advantage of the communication mechanism that we used is that it handles all cases and shapes of the graph.
 
 # Appendix
 
@@ -55,33 +47,33 @@ No. of processes: 1
 
 | Nodes | Serial | Parallel | Speedup |
 | ----- | ------ | -------- | ------- |
-| 1112  | 0.0169 | 0.0171   | 0.9855  |
-| 5424  | 0.3240 | 0.3271   | 0.9904  |
-| 10000 | 0.9752 | 0.9708   | 1.0045  |
+| 1112  | 0.0222 | 0.0171   | 1.2996  |
+| 5424  | 0.3234 | 0.1862   | 1.7371  |
+| 10000 | 0.9719 | 0.4972   | 1.9546  |
 
 No. of processes: 2
 
 | Nodes | Serial | Parallel | Speedup |
 | ----- | ------ | -------- | ------- |
-| 1112  | 0.0190 | 0.0139   | 1.3628  |
-| 5424  | 0.3232 | 0.1772   | 1.8240  |
-| 10000 | 0.9762 | 0.5224   | 1.8688  |
+| 1112  | 0.0223 | 0.0171   | 1.3041  |
+| 5424  | 0.3234 | 0.1866   | 1.7332  |
+| 10000 | 0.9721 | 0.4977   | 1.9534  |
 
 No. of processes: 3
 
 | Nodes | Serial | Parallel | Speedup |
 | ----- | ------ | -------- | ------- |
-| 1112  | 0.0175 | 0.0084   | 2.0917  |
-| 5424  | 0.3259 | 0.1539   | 2.1178  |
-| 10000 | 0.9847 | 0.3823   | 2.5759  |
+| 1112  | 0.0223 | 0.0171   | 1.3062  |
+| 5424  | 0.3234 | 0.1847   | 1.7513  |
+| 10000 | 0.9719 | 0.4896   | 1.9850  |
 
 No. of processes: 4
 
 | Nodes | Serial | Parallel | Speedup |
 | ----- | ------ | -------- | ------- |
-| 1112  | 0.0182 | 0.0079   | 2.2873  |
-| 5424  | 0.3237 | 0.1182   | 2.7398  |
-| 10000 | 0.9776 | 0.2744   | 3.5629  |
+| 1112  | 0.0223 | 0.0169   | 1.3205  |
+| 5424  | 0.3237 | 0.1805   | 1.7936  |
+| 10000 | 0.9722 | 0.4777   | 2.0354  |
 
 ### Multiple Machines
 
@@ -89,22 +81,22 @@ No. of processes: 2
 
 | Nodes | Serial | Parallel | Speedup |
 | ----- | ------ | -------- | ------- |
-| 1112  | 0.0229 | 0.0166   | 1.3760  |
-| 5424  | 0.3230 | 0.1883   | 1.7159  |
-| 10000 | 0.9685 | 0.5061   | 1.9137  |
+| 1112  | 0.0224 | 0.0169   | 1.3213  |
+| 5424  | 0.3237 | 0.1809   | 1.7891  |
+| 10000 | 0.9726 | 0.4791   | 2.0300  |
 
 No. of processes: 3
 
 | Nodes | Serial | Parallel | Speedup |
 | ----- | ------ | -------- | ------- |
-| 1112  | 0.0229 | 0.0169   | 1.3553  |
-| 5424  | 0.3235 | 0.1567   | 2.0645  |
-| 10000 | 0.9737 | 0.3626   | 2.6855  |
+| 1112  | 0.0224 | 0.0169   | 1.3225  |
+| 5424  | 0.3237 | 0.1792   | 1.8059  |
+| 10000 | 0.9725 | 0.4726   | 2.0576  |
 
 No. of processes: 4
 
 | Nodes | Serial | Parallel | Speedup |
 | ----- | ------ | -------- | ------- |
-| 1112  | 0.0228 | 0.0142   | 1.6078  |
-| 5424  | 0.3233 | 0.1124   | 2.8762  |
-| 10000 | 0.9703 | 0.2688   | 3.6098  |
+| 1112  | 0.0224 | 0.0168   | 1.3305  |
+| 5424  | 0.3236 | 0.1768   | 1.8308  |
+| 10000 | 0.9726 | 0.4635   | 2.0986  |
