@@ -19,7 +19,7 @@ $$chunk size = \frac{N_{nodes} + N_{padding zeros}}{N_{processes}}$$
 
 Note that we added padding zeros to the vector in the case where the number of nodes is not perfectly divisible by the number of processes.
 
-Each process will do a _chunksize_ amount of work and its start and end indices are calculated using their rank as follows:
+Each process will do a $chunksize$ amount of work and its start and end indices are calculated using their rank as follows:
 $$start = chunksize \times rank_{process}$$
 $$end = chunksize \times ({rank_{process} + 1})$$
 
@@ -31,7 +31,7 @@ After dividing the work between processes, each process does its contribution of
 
 1.  Is the performance of your program better on a single machine setup or on a multiple machines setup? What is the reason?
 
-    The program runs better on multiple machines. This is likely due to a better distributed workload amongst the machines. On a single machine, the performance of the program will decrease as the number of processes is increased, due to the context switching between processes. When running a relatively large program on multiple machines, the workload is much more balanced and is thus more performant.
+    For small problem sizes, the single machine setup will perform better than a multiple machine setup where there would be additional communication overhead. However as the problem size increases, the program will begin to benefit from having the work be distributed amongst machines, and the communication overhead will be less of an issue. Also, as the number of processes on a single machine increases, the efficiency of the program significantly decreases due to overhead from coordination between processes. This is less of an issue with multiple machines, where the performance could vary depending on the problem size and number of machines running. Therefore, a large problem (>1112 nodes) would perform better on a multiple machine setup.
 
 2.  What is the best number of processes that should be used in your program, respective to the different problem sizes? How does the granularity affect the running time of your program and why?
 
