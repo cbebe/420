@@ -26,9 +26,8 @@ run_experiment() {
 }
 
 date >>$output_file
-printf "* With padding *\n" | tee -a $output_file
-printf "*** Single Machine ***\n" | tee -a $output_file
+printf "### Single Machine\n" | tee -a $output_file
 run_experiment "With padding, Single Machine "
 
-printf "*** Multiple Machines ***\n" | tee -a $output_file
+printf "### Multiple Machines\n" | tee -a $output_file
 run_experiment "With padding, Multiple Machines " 1

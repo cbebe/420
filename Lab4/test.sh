@@ -16,15 +16,13 @@ YELLOW="\033[01;33m"
 BLUE="\033[01;34m"
 
 print_speedup() {
-    printf -- '+-------+--------+----------+---------+\n'
     printf    "| Nodes | Serial | Parallel | Speedup |\n"
-    printf    "+-------+--------+----------+---------+\n"
+    printf    "| ----- | ------ | -------- | ------- |\n"
     for node in $nodes
     do
         num_nodes=$(head -n1 data_input${node}_meta)
         ./speedup $num_nodes $(tail -n1 average$node-serial.txt) $(tail -n1 average$node.txt)
     done
-    printf -- '+-------+--------+----------+---------+\n'
 }
 
 link_new() {
