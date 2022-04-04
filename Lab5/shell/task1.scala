@@ -8,6 +8,6 @@
   */
 val result = sc.textFile("data_input").map { line =>
     line.split("\t")(1).toInt
-}.groupBy(identity).mapValues(_.size).reduce((acc, value) => {
-    if (acc._2 < value._2) value else acc
-})._2
+}.groupBy(identity).reduce((acc, value) => {
+    if (acc._2.size < value._2.size) value else acc
+})._2.size
