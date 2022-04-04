@@ -7,10 +7,9 @@
   * This is done by creating a two-way map of tuples to represent each node's
   * neighbours and then grouping the distinct values by their key
   */
-val result = sc.textFile("data_input").map { line =>
-    line.split("\t").map(n => n.toInt)
-}.flatMap {
-    n => Map(n(0) -> n(1), n(1) -> n(0))
+val result = sc.textFile("data_input").flatMap { line =>
+    val pair = line.split("\t").map(n => n.toInt)
+    Map(pair(0) -> pair(1), pair(1) -> pair(0))
 }.groupBy(_._1).mapValues{ buf =>
     buf.map(x => x._2).toList.distinct
 }
