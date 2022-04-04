@@ -1,2 +1,6 @@
 datatrim
+data_input
+.metals
 *.zip
+
+src
