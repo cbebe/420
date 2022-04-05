@@ -14,4 +14,3 @@ val twoHop = cartesian.filter {
     case ((n1, d1), (n2, d2)) => (n1, d2)
 }
 val result = pairs ++ twoHop
-result.collect().foreach(println)
